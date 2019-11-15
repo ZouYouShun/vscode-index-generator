@@ -8,14 +8,18 @@ export function createIndex(additionProps: IndexGeneratorOptions = {}) {
   const { rootPath } = vscode.workspace;
   const perttierConfig = path.join(rootPath, '.prettierrc.js');
   const ignore = path.join(rootPath, '.indexignore.json');
-  const dirPath = path.dirname(
-    vscode.window.activeTextEditor.document.fileName,
-  );
-  new IndexGenerator(dirPath, {
-    force: true,
-    type: 'both',
-    perttierConfig,
-    ignore,
-    ...additionProps,
-  }).createFile();
+  const dirPath = vscode.window.activeTextEditor
+    ? path.dirname(vscode.window.activeTextEditor.document.fileName)
+    : rootPath;
+  try {
+    new IndexGenerator(dirPath, {
+      force: true,
+      type: 'both',
+      perttierConfig,
+      ignore,
+      ...additionProps,
+    }).createFile();
+  } catch (error) {
+    console.log(error);
+  }
 }

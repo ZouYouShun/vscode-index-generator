@@ -8,7 +8,7 @@ export const checkExtPath = (exts, filePath) => {
     ) ||
     // prettier-ignore
     new RegExp(
-    `(${regexString(ext => `.spec.${ext}$`)})|(^_)|${regexString(ext => `.test.${ext}$`)}`,
+    `(${regexString(ext => `.spec.${ext}$`)})|(^_)|(.d.ts)|${regexString(ext => `.test.${ext}$`)}`,
     'gi'
   ).test(filePath)
   );

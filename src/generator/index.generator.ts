@@ -182,21 +182,25 @@ export class IndexGenerator {
         perttierConfig = require(this.options.perttierConfig);
       }
 
-      const result = prettier.format(
-        // commont +
-        os.EOL +
-          [...importContentObj].join(os.EOL) +
+      try {
+        const result = prettier.format(
+          // commont +
           os.EOL +
-          os.EOL +
-          exportObject(exportObjectContentObj) +
-          os.EOL +
-          [...exportDefaultContentObj].join(os.EOL),
-        {
-          parser: 'babel',
-          ...perttierConfig,
-        },
-      );
-      fs.writeFileSync(targetUrl, result);
+            [...importContentObj].join(os.EOL) +
+            os.EOL +
+            os.EOL +
+            exportObject(exportObjectContentObj) +
+            os.EOL +
+            [...exportDefaultContentObj].join(os.EOL),
+          {
+            parser: 'babel',
+            ...perttierConfig,
+          },
+        );
+        fs.writeFileSync(targetUrl, result);
+      } catch (error) {
+        console.log(`${chalk.red('fail: ')} ${targetUrl}`);
+      }
     }
 
     return exportCount;
