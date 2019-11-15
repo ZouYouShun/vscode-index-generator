@@ -1,6 +1,7 @@
 {
   "name": "index-generator",
   "displayName": "index-generator",
+  "publisher": "DeclanZou",
   "description": "",
   "version": "0.0.1",
   "engines": {
