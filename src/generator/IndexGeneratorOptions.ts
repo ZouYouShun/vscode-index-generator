@@ -3,5 +3,6 @@ export type IndexGeneratorOptions = {
   js?: boolean;
   type?: 'js' | 'ts' | 'both';
   ignore?: string;
+  onlyTarget?: boolean;
   perttierConfig?: string;
 };

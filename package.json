@@ -10,14 +10,19 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.helloWorld"
+    "onCommand:extension.createIndex",
+    "onCommand:extension.createIndexOnlyTarget"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "extension.helloWorld",
-        "title": "Hello World"
+        "command": "extension.createIndex",
+        "title": "Index-Generator: Create index all file and folder with this target folder and sub folder."
+      },
+      {
+        "command": "extension.createIndexOnlyTarget",
+        "title": "Index-Generator: Create only target file index file with this target folder."
       }
     ]
   },

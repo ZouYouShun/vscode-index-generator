@@ -29,7 +29,7 @@ export class IndexGenerator {
   ignore: IndexIgnoreOptions;
 
   constructor(private target: string, private options: IndexGeneratorOptions) {
-    if (fs.existsSync(options.ignore)) {
+    if (options.ignore && fs.existsSync(options.ignore)) {
       this.ignore = require(options.ignore);
 
       this.ig.add(this.ignore.exclude);
@@ -54,7 +54,7 @@ export class IndexGenerator {
 
     let exportCount = 0;
 
-    filePaths.forEach(filePath => {
+    filePaths.forEach((filePath) => {
       const absoluteFilePath = path.join(dirUrl, filePath);
 
       if (this.checkPathVariable(absoluteFilePath) || filePath === 'scss') {
@@ -67,7 +67,7 @@ export class IndexGenerator {
       let currentDirCount = 0;
 
       // check is dir
-      if (isDir) {
+      if (isDir && !this.options.onlyTarget) {
         currentDirCount = this.createFile(absoluteFilePath);
         exportCount += currentDirCount;
 
@@ -96,7 +96,7 @@ export class IndexGenerator {
 
         filePath = filePath.replace(
           new RegExp(`.${fileExt}$|.${fileExt}x$`, 'gi'),
-          ''
+          '',
         );
 
         const content = fs.readFileSync(absoluteFilePath).toString();
@@ -118,7 +118,7 @@ export class IndexGenerator {
                 dirName,
                 ext: fileExt,
                 template: content,
-                absoluteFilePath
+                absoluteFilePath,
               })
             ) {
               let count = 0;
@@ -175,7 +175,10 @@ export class IndexGenerator {
       }
 
       let perttierConfig = {};
-      if (this.options.perttierConfig) {
+      if (
+        this.options.perttierConfig &&
+        fs.existsSync(this.options.perttierConfig)
+      ) {
         perttierConfig = require(this.options.perttierConfig);
       }
 
@@ -190,8 +193,8 @@ export class IndexGenerator {
           [...exportDefaultContentObj].join(os.EOL),
         {
           parser: 'babel',
-          ...perttierConfig
-        }
+          ...perttierConfig,
+        },
       );
       fs.writeFileSync(targetUrl, result);
     }
@@ -214,7 +217,7 @@ export class IndexGenerator {
     dirName,
     ext,
     template,
-    absoluteFilePath
+    absoluteFilePath,
   }: ConvertOptions) {
     const dirTargetUrl = path.join(dirUrl, `${dirName}.${ext}`);
 
@@ -224,8 +227,8 @@ export class IndexGenerator {
       fs.writeFileSync(dirTargetUrl, template);
       console.log(
         `${chalk.yellow(
-          'rename file: '
-        )} ${absoluteFilePath} => ${dirTargetUrl}`
+          'rename file: ',
+        )} ${absoluteFilePath} => ${dirTargetUrl}`,
       );
       return true;
     } else {
@@ -247,8 +250,7 @@ export class IndexGenerator {
       checkUrl = checkUrl.substring(1);
     }
     return (
-      this.ignore &&
-      (this.ignore.exclude && this.ig.ignores(path.join(checkUrl)))
+      this.ignore && this.ignore.exclude && this.ig.ignores(path.join(checkUrl))
     );
   }
 }
