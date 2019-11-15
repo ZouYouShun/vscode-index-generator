@@ -7,7 +7,7 @@ export function activate(context: vscode.ExtensionContext) {
   console.log('"index-generator" is now active!');
 
   const disposable = vscode.commands.registerCommand(
-    'extension.createIndex',
+    'index-generator.createIndex',
     () => {
       createIndex();
       vscode.window.showInformationMessage('Create index successful!', 'OK');
@@ -15,7 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   const disposableOnlyTarget = vscode.commands.registerCommand(
-    'extension.createIndexOnlyTarget',
+    'index-generator.createIndexOnlyTarget',
     () => {
       createIndex({ onlyTarget: true });
       vscode.window.showInformationMessage('Create index successful!', 'OK');

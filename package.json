@@ -1,9 +1,10 @@
 {
   "name": "index-generator",
   "displayName": "index-generator",
-  "publisher": "DeclanZou",
-  "description": "",
-  "version": "0.0.1",
+  "publisher": "declanzou",
+  "description": "Create index.ts(js) for folder.",
+  "repository": "https://github.com/ZouYouShun/vscode-index-generator",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.40.0"
   },
@@ -11,18 +12,18 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.createIndex",
-    "onCommand:extension.createIndexOnlyTarget"
+    "onCommand:index-generator.createIndex",
+    "onCommand:index-generator.createIndexOnlyTarget"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "extension.createIndex",
+        "command": "index-generator.createIndex",
         "title": "Index-Generator: Create index all file and folder with this target folder and sub folder."
       },
       {
-        "command": "extension.createIndexOnlyTarget",
+        "command": "index-generator.createIndexOnlyTarget",
         "title": "Index-Generator: Create only target file index file with this target folder."
       }
     ]
