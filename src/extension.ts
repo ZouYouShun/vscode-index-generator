@@ -3,8 +3,8 @@ import * as vscode from 'vscode';
 import {
   createIndexCommand,
   createIndexOnlyTargetCommand,
-  toTsCommand,
   switchTypeInterfaceCommand,
+  toTsCommand,
 } from './commands';
 import { extensionNamespace } from './utils/extensionNamespace';
 

@@ -1,7 +1,7 @@
 export class SwitchHandler {
   constructor(private template: string) {}
 
-  async switchTypeInterface() {
+  switchTypeInterface() {
     if (this.template.includes('type')) {
       this.switchDo(true);
       return this.template;
@@ -20,7 +20,9 @@ export class SwitchHandler {
 
     const change = [t1, t2, t3];
     change.forEach((t) => {
-      (this.template as any).replace(...(fromType ? t : t.reverse()));
+      this.template = (this.template as any).replace(
+        ...(fromType ? t : t.reverse()),
+      );
     });
 
     return this.template;

@@ -16,19 +16,14 @@ export const switchTypeInterfaceCommand = vscode.commands.registerCommand(
       let word = document.getText(selection);
 
       editor.edit((editBuilder) => {
-        editBuilder.replace(selection, 'cool');
+        try {
+          word = new SwitchHandler(word).switchTypeInterface();
+
+          editBuilder.replace(selection, word);
+        } catch (error) {
+          vscode.window.showErrorMessage(error);
+        }
       });
     }
-
-    // try {
-    //   new SwitchHandler(dirPath).switchTypeInterface();
-
-    //   vscode.window.showInformationMessage(
-    //     'Switch type or interface successful!',
-    //     'OK',
-    //   );
-    // } catch (error) {
-    //   vscode.window.showErrorMessage(error);
-    // }
   },
 );
