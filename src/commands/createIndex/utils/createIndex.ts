@@ -1,8 +1,8 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 
-import { IndexGenerator } from './generator';
-import { IndexGeneratorOptions } from './generator/IndexGeneratorOptions';
+import { IndexGenerator } from '../../../generator';
+import { IndexGeneratorOptions } from '../../../generator/IndexGeneratorOptions';
 
 export function createIndex(additionProps: IndexGeneratorOptions = {}) {
   const { rootPath } = vscode.workspace;
