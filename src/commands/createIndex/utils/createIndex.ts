@@ -19,7 +19,5 @@ export function createIndex(additionProps: IndexGeneratorOptions = {}) {
       ignore,
       ...additionProps,
     }).createFile();
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 }

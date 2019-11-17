@@ -1,3 +1,5 @@
+// const moduleExportRegex = /module.exports.*/gi;
+
 // const createStore = require('redux')
 const r1 = /^(let|var|const) +([a-zA-Z_$][a-zA-Z0-9_$]*) +\= +(require)\((('|")[a-zA-Z0-9-_.\/]+('|"))\)/gm;
 // const createStore = require('redux').createStore
@@ -9,5 +11,6 @@ export function replaceRequireToImport(template: string) {
   return template
     .replace(r3, `import { $3 } from $5`)
     .replace(r2, `import { $7 as $2 } from $4`)
-    .replace(r1, `import $2 from $4`);
+    .replace(r1, `import $2 from $4`)
+    .replace(/module.exports =/g, 'export default');
 }

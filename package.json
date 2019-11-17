@@ -24,6 +24,10 @@
       {
         "command": "index-generator.createIndexOnlyTarget",
         "title": "Index-Generator: Create only target file index file with this target folder."
+      },
+      {
+        "command": "index-generator.toTs",
+        "title": "Index-Generator: Change files to ts."
       }
     ]
   },

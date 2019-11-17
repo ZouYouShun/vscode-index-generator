@@ -4,6 +4,7 @@ import * as path from 'path';
 
 import { Lib } from '../utils/lib';
 import { replaceRequireToImport } from './utils';
+import { OutputChannel } from '../utils';
 
 export interface ChangeFileHandlerOptions {
   from: string;
@@ -15,7 +16,7 @@ export class ChangeFileHandler {
 
   constructor(
     private target: string,
-    private options: ChangeFileHandlerOptions,
+    private options: ChangeFileHandlerOptions = {} as any,
   ) {}
 
   async clearEmpty() {
@@ -35,6 +36,7 @@ export class ChangeFileHandler {
   async changeExt(cb?: (fromUrl: string) => { content: string; ext: string }) {
     this.fileTree.forEach((fromUrl) => {
       const regex = new RegExp(`\.${this.options.from}$`, 'gi');
+
       if (regex.test(fromUrl)) {
         let toUrl = fromUrl.replace(regex, `.${this.options.to}`);
 
@@ -48,8 +50,8 @@ export class ChangeFileHandler {
           fs.moveSync(fromUrl, toUrl, { overwrite: true });
         }
 
-        console.log(
-          `${chalk.green(`change file ext to ${this.options.to}: `)} ${toUrl}`,
+        OutputChannel.appendLine(
+          `${chalk.green(`To ${path.extname(toUrl)}: `)} ${toUrl}`,
         );
       }
     });
@@ -57,12 +59,10 @@ export class ChangeFileHandler {
 
   async toTs() {
     this.options.from = 'js';
-    let ext = 'ts';
 
-    await this.changeExt((fromUrl) => {
-      const content = replaceRequireToImport(
-        fs.readFileSync(fromUrl).toString(),
-      );
+    return await this.changeExt((fromUrl) => {
+      let content = replaceRequireToImport(fs.readFileSync(fromUrl).toString());
+      let ext = 'ts';
 
       if (content.includes('React')) {
         ext = 'tsx';
