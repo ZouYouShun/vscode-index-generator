@@ -3,14 +3,14 @@ import * as vscode from 'vscode';
 
 import { IndexGenerator } from '../../../generator';
 import { IndexGeneratorOptions } from '../../../generator/IndexGeneratorOptions';
+import { askTargetFolder } from '../../../utils';
 
-export function createIndex(additionProps: IndexGeneratorOptions = {}) {
+export async function createIndex(additionProps: IndexGeneratorOptions = {}) {
   const { rootPath } = vscode.workspace;
   const perttierConfig = path.join(rootPath, '.prettierrc.js');
   const ignore = path.join(rootPath, '.indexignore.json');
-  const dirPath = vscode.window.activeTextEditor
-    ? path.dirname(vscode.window.activeTextEditor.document.fileName)
-    : rootPath;
+
+  const dirPath = await askTargetFolder();
   try {
     new IndexGenerator(dirPath, {
       force: true,

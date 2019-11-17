@@ -42,32 +42,36 @@ export class ChangeFileHandler {
   async changeExt(
     cb?: (fromUrl: string) => Promise<{ content: string; ext: string }>,
   ) {
-    this.fileTree.forEach(async (fromUrl) => {
-      const regex = new RegExp(`\.${this.options.from}$`, 'gi');
+    try {
+      this.fileTree.forEach(async (fromUrl) => {
+        const regex = new RegExp(`\.${this.options.from}$`, 'gi');
 
-      if (regex.test(fromUrl)) {
-        let toUrl = fromUrl.replace(regex, `.${this.options.to}`);
+        if (regex.test(fromUrl)) {
+          let toUrl = fromUrl.replace(regex, `.${this.options.to}`);
 
-        if (cb) {
-          const result = await cb(fromUrl);
-          toUrl = fromUrl.replace(regex, `.${result.ext}`);
+          if (cb) {
+            const result = await cb(fromUrl);
+            toUrl = fromUrl.replace(regex, `.${result.ext}`);
 
-          if (result.content) {
-            fs.writeFileSync(toUrl, result.content);
+            if (result.content) {
+              fs.writeFileSync(toUrl, result.content);
 
-            if (fs.existsSync(fromUrl)) {
-              fs.unlinkSync(fromUrl);
+              if (fs.existsSync(fromUrl)) {
+                fs.unlinkSync(fromUrl);
+              }
             }
+          } else {
+            fs.moveSync(fromUrl, toUrl, { overwrite: true });
           }
-        } else {
-          fs.moveSync(fromUrl, toUrl, { overwrite: true });
-        }
 
-        OutputChannel.appendLine(
-          `${chalk.green(`To ${path.extname(toUrl)}: `)} ${toUrl}`,
-        );
-      }
-    });
+          OutputChannel.appendLine(
+            `${chalk.green(`To ${path.extname(toUrl)}: `)} ${toUrl}`,
+          );
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async toTs() {
@@ -79,11 +83,12 @@ export class ChangeFileHandler {
 
       if (content.includes('React')) {
         ext = 'tsx';
+        await openDocument(fromUrl);
+
         await checkExtensionLoaded(
           'mohsen1.react-javascript-to-typescript-transform-vscode',
         );
 
-        await openDocument(fromUrl);
         await executeCommand('extension.convertReactToTypeScript');
 
         const regex = new RegExp(`\.${this.options.from}$`, 'gi');
@@ -93,12 +98,13 @@ export class ChangeFileHandler {
         await checkExtensionLoaded('rbbit.typescript-hero');
         await executeCommand('typescriptHero.imports.organize');
 
-        await sleep(100);
+        await sleep(300);
 
         await checkExtensionLoaded('esbenp.prettier-vscode');
         await executeCommand('editor.action.formatDocument');
         await executeCommand('workbench.action.files.saveAll');
 
+        await sleep(500);
         content = undefined;
       }
 

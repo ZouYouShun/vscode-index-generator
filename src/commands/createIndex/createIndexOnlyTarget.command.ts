@@ -5,8 +5,8 @@ import { createIndex } from './utils';
 
 export const createIndexOnlyTargetCommand = vscode.commands.registerCommand(
   `${extensionNamespace}.createIndexOnlyTarget`,
-  () => {
-    createIndex({ onlyTarget: true });
+  async () => {
+    await createIndex({ onlyTarget: true });
     vscode.window.showInformationMessage('Create index successful!', 'OK');
   },
 );
