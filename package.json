@@ -26,6 +26,10 @@
         "title": "Index-Generator: Create only target file index file with this target folder."
       },
       {
+        "command": "index-generator.switchTypeInterface",
+        "title": "Index-Generator: Switch Type and Interface"
+      },
+      {
         "command": "index-generator.toTs",
         "title": "Index-Generator: Change files to ts."
       }

@@ -1,9 +1,8 @@
-import * as vscode from 'vscode';
 import * as path from 'path';
+import * as vscode from 'vscode';
 
-import { extensionNamespace } from '../../utils/extensionNamespace';
 import { ChangeFileHandler } from '../../handlers/changeFile.handler';
-import { OutputChannel } from '../../utils/outputCannel';
+import { extensionNamespace } from '../../utils/extensionNamespace';
 
 export const toTsCommand = vscode.commands.registerCommand(
   `${extensionNamespace}.toTs`,
