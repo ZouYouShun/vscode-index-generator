@@ -1,6 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
+import { OutputChannel } from './outputCannel';
+
 const mkdirFull = (dirname: string) => {
   if (fs.existsSync(dirname)) {
     return true;
@@ -19,7 +21,7 @@ export namespace Lib {
         mkdirFull(url);
       }
     } catch (error) {
-      console.log(error);
+      OutputChannel.appendLine(error);
       return false;
     }
     return true;
@@ -47,7 +49,7 @@ export namespace Lib {
         fs.unlinkSync(url);
       }
     } catch (error) {
-      console.log(error);
+      OutputChannel.appendLine(error);
       return false;
     }
     return true;
@@ -57,7 +59,7 @@ export namespace Lib {
     let files = [];
     if (fs.existsSync(url)) {
       files = fs.readdirSync(url);
-      files.forEach(file => {
+      files.forEach((file) => {
         const curPath = `${url}/${file}`;
         if (fs.statSync(curPath).isDirectory()) {
           // recurse
@@ -87,7 +89,7 @@ export namespace Lib {
     const returnObj: string[] = [];
     const files = fs.readdirSync(sourceUrl);
 
-    files.forEach(file => {
+    files.forEach((file) => {
       const url = path.join(sourceUrl, file);
 
       const checkDir = fs.lstatSync(url).isDirectory();
@@ -140,7 +142,7 @@ export namespace Lib {
 
     // Replace all capital letters and group of numbers by the
     // separator followed by lowercase version of the match
-    currentText = currentText.replace(/[A-Z]|\d+/g, match => {
+    currentText = currentText.replace(/[A-Z]|\d+/g, (match) => {
       return currentSeparator + match.toLowerCase();
     });
 

@@ -14,7 +14,7 @@ export class OutputChannel {
     return OutputChannel.instance;
   }
 
-  static appendLine(message: string | string[]) {
+  static appendLine(message: string | string[], show = true) {
     const { channel } = OutputChannel.getInstance();
 
     if (message instanceof Array) {
@@ -23,6 +23,9 @@ export class OutputChannel {
       channel.appendLine(message);
     }
 
-    channel.show(true);
+    if (show) {
+      channel.show(show);
+    }
+    console.log(message);
   }
 }

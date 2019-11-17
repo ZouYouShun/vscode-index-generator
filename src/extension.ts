@@ -7,9 +7,10 @@ import {
   toTsCommand,
 } from './commands';
 import { extensionNamespace } from './utils/extensionNamespace';
+import { OutputChannel } from './utils';
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log(`"${extensionNamespace}" is now active!`);
+  OutputChannel.appendLine(`"${extensionNamespace}" is now active!`, false);
 
   context.subscriptions.push(toTsCommand);
   context.subscriptions.push(switchTypeInterfaceCommand);

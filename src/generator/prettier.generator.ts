@@ -6,6 +6,7 @@ import * as path from 'path';
 import * as prettier from 'prettier';
 import { IndexGeneratorOptions } from './IndexGeneratorOptions';
 import { IndexIgnoreOptions } from './index.generator';
+import { OutputChannel } from '../utils';
 
 export class PrettierGenerator {
   url: string;
@@ -57,7 +58,7 @@ export class PrettierGenerator {
           const result = this.getPrettierResult(absoluteFilePath, content);
 
           if (result) {
-            console.log(
+            OutputChannel.appendLine(
               `${chalk.green('prettier format with: ')} ${absoluteFilePath}`
             );
 
@@ -65,7 +66,7 @@ export class PrettierGenerator {
           }
         }
       } catch (error) {
-        console.log(`${chalk.red('error with ')} ${absoluteFilePath}`);
+        OutputChannel.appendLine(`${chalk.red('error with ')} ${absoluteFilePath}`);
         this.error.push(absoluteFilePath);
       }
     });

@@ -20,7 +20,7 @@ export class PhoneGenerator {
       this.importObj.push(`import { ${dirName} } from './${dirName}';`);
       this.exportObj.push(`${Lib.firstLowerCase(dirName)}: ${dirName};`);
     });
-    // console.log(modules);
+    // OutputChannel.appendLine(modules);
 
     let perttierConfig = {};
     if (this.options.perttierConfig) {

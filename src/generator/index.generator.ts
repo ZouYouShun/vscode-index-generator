@@ -7,6 +7,7 @@ import * as prettier from 'prettier';
 import { IndexGeneratorOptions } from './IndexGeneratorOptions';
 import { Lib } from '../utils/lib';
 import { checkExtPath } from '../utils/checkExtPath';
+import { OutputChannel } from '../utils';
 
 export interface IndexIgnoreOptions {
   exclude: string[];
@@ -166,12 +167,13 @@ export class IndexGenerator {
     if (exportCount > 0) {
       if (fs.existsSync(targetUrl)) {
         if (!this.options.force) {
-          console.log(`${chalk.red('existed ')} ${targetUrl}`);
+          OutputChannel.appendLine(`${chalk.red('existed ')} ${targetUrl}`);
+
           return 0;
         }
-        console.log(`${chalk.yellow('update ')} ${targetUrl}`);
+        OutputChannel.appendLine(`${chalk.yellow('update ')} ${targetUrl}`);
       } else {
-        console.log(`${chalk.green('create ')} ${targetUrl}`);
+        OutputChannel.appendLine(`${chalk.green('create ')} ${targetUrl}`);
       }
 
       let perttierConfig = {};
@@ -199,7 +201,7 @@ export class IndexGenerator {
         );
         fs.writeFileSync(targetUrl, result);
       } catch (error) {
-        console.log(`${chalk.red('fail: ')} ${targetUrl}`);
+        OutputChannel.appendLine(`${chalk.red('fail: ')} ${targetUrl}`);
       }
     }
 
@@ -229,7 +231,7 @@ export class IndexGenerator {
 
     if (!fs.existsSync(dirTargetUrl)) {
       fs.writeFileSync(dirTargetUrl, template);
-      console.log(
+      OutputChannel.appendLine(
         `${chalk.yellow(
           'rename file: ',
         )} ${absoluteFilePath} => ${dirTargetUrl}`,

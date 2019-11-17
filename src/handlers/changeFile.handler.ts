@@ -27,7 +27,7 @@ export class ChangeFileHandler {
         const child = Lib.getFileTree(url);
         if (child.length === 0) {
           Lib.deleteDir(url);
-          console.log(`${chalk.green('delete dir ')} ${url}`);
+          OutputChannel.appendLine(`${chalk.green('delete dir ')} ${url}`);
         }
       }
     });
