@@ -2,9 +2,15 @@ import chalk from 'chalk';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
+import {
+  checkExtensionLoaded,
+  executeCommand,
+  openDocument,
+  OutputChannel,
+  sleep,
+} from '../utils';
 import { Lib } from '../utils/lib';
 import { replaceRequireToImport } from './utils';
-import { OutputChannel } from '../utils';
 
 export interface ChangeFileHandlerOptions {
   from: string;
@@ -33,19 +39,26 @@ export class ChangeFileHandler {
     });
   }
 
-  async changeExt(cb?: (fromUrl: string) => { content: string; ext: string }) {
-    this.fileTree.forEach((fromUrl) => {
+  async changeExt(
+    cb?: (fromUrl: string) => Promise<{ content: string; ext: string }>,
+  ) {
+    this.fileTree.forEach(async (fromUrl) => {
       const regex = new RegExp(`\.${this.options.from}$`, 'gi');
 
       if (regex.test(fromUrl)) {
         let toUrl = fromUrl.replace(regex, `.${this.options.to}`);
 
         if (cb) {
-          const result = cb(fromUrl);
+          const result = await cb(fromUrl);
           toUrl = fromUrl.replace(regex, `.${result.ext}`);
 
-          fs.writeFileSync(toUrl, result.content);
-          fs.unlinkSync(fromUrl);
+          if (result.content) {
+            fs.writeFileSync(toUrl, result.content);
+
+            if (fs.existsSync(fromUrl)) {
+              fs.unlinkSync(fromUrl);
+            }
+          }
         } else {
           fs.moveSync(fromUrl, toUrl, { overwrite: true });
         }
@@ -60,12 +73,33 @@ export class ChangeFileHandler {
   async toTs() {
     this.options.from = 'js';
 
-    return await this.changeExt((fromUrl) => {
+    return await this.changeExt(async (fromUrl) => {
       let content = replaceRequireToImport(fs.readFileSync(fromUrl).toString());
       let ext = 'ts';
 
       if (content.includes('React')) {
         ext = 'tsx';
+        await checkExtensionLoaded(
+          'mohsen1.react-javascript-to-typescript-transform-vscode',
+        );
+
+        await openDocument(fromUrl);
+        await executeCommand('extension.convertReactToTypeScript');
+
+        const regex = new RegExp(`\.${this.options.from}$`, 'gi');
+        const toUrl = fromUrl.replace(regex, `.tsx`);
+        await openDocument(toUrl);
+
+        await checkExtensionLoaded('rbbit.typescript-hero');
+        await executeCommand('typescriptHero.imports.organize');
+
+        await sleep(100);
+
+        await checkExtensionLoaded('esbenp.prettier-vscode');
+        await executeCommand('editor.action.formatDocument');
+        await executeCommand('workbench.action.files.saveAll');
+
+        content = undefined;
       }
 
       return {
