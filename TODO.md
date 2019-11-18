@@ -1,5 +1,0 @@
-combine extentions
-
-hero
-prettier
-convertReactToTypeScript

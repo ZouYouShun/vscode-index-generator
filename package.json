@@ -4,7 +4,7 @@
   "publisher": "declanzou",
   "description": "Create index.ts(js) for folder.",
   "repository": "https://github.com/ZouYouShun/vscode-index-generator",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "engines": {
     "vscode": "^1.40.0"
   },
