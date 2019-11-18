@@ -5,6 +5,7 @@ import * as path from 'path';
 import {
   checkExtensionLoaded,
   executeCommand,
+  extensionNamespace,
   openDocument,
   OutputChannel,
   sleep,
@@ -98,13 +99,21 @@ export class ChangeFileHandler {
         await checkExtensionLoaded('rbbit.typescript-hero');
         await executeCommand('typescriptHero.imports.organize');
 
-        await sleep(300);
+        await sleep(500);
 
         await checkExtensionLoaded('esbenp.prettier-vscode');
         await executeCommand('editor.action.formatDocument');
+        await sleep(500);
+
+        await checkExtensionLoaded('dbaeumer.vscode-eslint');
+        await executeCommand('eslint.executeAutofix');
+
+        // await sleep(500);
+        // await executeCommand('editor.action.selectAll');
+        // await executeCommand(`${extensionNamespace}.switchTypeInterface`);
+
         await executeCommand('workbench.action.files.saveAll');
 
-        await sleep(500);
         content = undefined;
       }
 

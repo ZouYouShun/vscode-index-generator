@@ -18,7 +18,8 @@
   "extensionPack": [
     "mohsen1.react-javascript-to-typescript-transform-vscode",
     "rbbit.typescript-hero",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint"
   ],
   "contributes": {
     "commands": [
