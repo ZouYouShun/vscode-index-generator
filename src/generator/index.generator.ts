@@ -6,7 +6,7 @@ import * as path from 'path';
 import * as prettier from 'prettier';
 import { IndexGeneratorOptions } from './IndexGeneratorOptions';
 import { Lib } from '../utils/lib';
-import { checkExtPath } from '../utils/checkExtPath';
+import { checkExtPath, escapeRegExp } from '../utils/checkExtPath';
 import { OutputChannel } from '../utils';
 
 export interface IndexIgnoreOptions {
@@ -96,7 +96,7 @@ export class IndexGenerator {
         const fileExt = Lib.extname(filePath);
 
         filePath = filePath.replace(
-          new RegExp(`.${fileExt}$|.${fileExt}x$`, 'gi'),
+          new RegExp(escapeRegExp(`.${fileExt}$|.${fileExt}x$`), 'gi'),
           '',
         );
 
