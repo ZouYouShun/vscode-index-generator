@@ -1,5 +1,6 @@
 export * from './camelize';
 export * from './checkExtPath';
+export * from './escapeRegExp';
 export * from './extension';
 export * from './extensionNamespace';
 export * from './getNameConfig';

@@ -1,6 +1,4 @@
-export function escapeRegExp(s: string): string {
-  return String(s).replace(/\./g, '\\$&');
-}
+import { escapeRegExp } from "./escapeRegExp";
 
 export const checkExtPath = (exts: string[], filePath: string) => {
   function regexString(cb: (ext: string) => string) {
