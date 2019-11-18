@@ -4,7 +4,7 @@
   "publisher": "declanzou",
   "description": "Create index.ts(js) for folder.",
   "repository": "https://github.com/ZouYouShun/vscode-index-generator",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "engines": {
     "vscode": "^1.40.0"
   },
@@ -15,6 +15,11 @@
     "*"
   ],
   "main": "./out/extension.js",
+  "extensionPack": [
+    "mohsen1.react-javascript-to-typescript-transform-vscode",
+    "rbbit.typescript-hero",
+    "esbenp.prettier-vscode"
+  ],
   "contributes": {
     "commands": [
       {
