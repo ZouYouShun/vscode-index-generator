@@ -38,6 +38,10 @@
       {
         "command": "index-generator.toTs",
         "title": "Index-Generator: Change files to ts."
+      },
+      {
+        "command": "index-generator.prettier",
+        "title": "Index-Generator: prettier all file."
       }
     ]
   },

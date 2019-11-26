@@ -1,2 +1,3 @@
-export * from './toTs.command';
+export * from './prettierFormat.command';
 export * from './switchTypeInterface.command';
+export * from './toTs.command';

@@ -10,9 +10,6 @@ import { OutputChannel } from '../utils';
 
 export class PrettierGenerator {
   url: string;
-  isforce: boolean;
-  isModule: boolean;
-  isJs: boolean;
   ignore: IndexIgnoreOptions;
   perttierConfig: any;
   error = [];
@@ -23,8 +20,6 @@ export class PrettierGenerator {
 
   constructor(target: string, options: IndexGeneratorOptions) {
     this.url = target;
-    this.isforce = options.force;
-    this.isJs = options.js;
     this.perttierConfig = require(options.perttierConfig);
 
     if (fs.existsSync(options.ignore)) {
