@@ -1,9 +1,11 @@
 # Change Log
 
-All notable changes to the "index-generator" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
 - Initial release
+
+## 0.0.11
+- first release with createIndex, createIndexOnlyTarget, switchTypeInterface, toTs
+  
+## 0.0.12
+
+### feature
+- add prettier format whole folder
