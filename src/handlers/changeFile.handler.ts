@@ -99,6 +99,8 @@ export class ChangeFileHandler {
         await checkExtensionLoaded('rbbit.typescript-hero');
         await executeCommand('typescriptHero.imports.organize');
 
+        // TODO: change type to interface, and add config to do this.
+
         await sleep(500);
 
         await checkExtensionLoaded('esbenp.prettier-vscode');
