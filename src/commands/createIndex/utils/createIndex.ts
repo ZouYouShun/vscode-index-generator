@@ -5,7 +5,10 @@ import { IndexGeneratorOptions } from '../../../generator/IndexGeneratorOptions'
 import { askTargetFolder } from '../../../utils';
 import { getConfigs } from '../../../utils/extension/getConfigs';
 
-export async function createIndex(additionProps: IndexGeneratorOptions = {}) {
+export async function createIndex(
+  type: IndexGeneratorOptions['type'] = 'both',
+  additionProps: IndexGeneratorOptions = {},
+) {
   const { rootPath } = vscode.workspace;
   const { perttierConfig, ignore } = getConfigs(rootPath);
 
@@ -13,11 +16,10 @@ export async function createIndex(additionProps: IndexGeneratorOptions = {}) {
   try {
     new IndexGenerator(dirPath, {
       force: true,
-      type: 'both',
+      type,
       perttierConfig,
       ignore,
       ...additionProps,
     }).createFile();
   } catch (error) {}
 }
-

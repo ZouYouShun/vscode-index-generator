@@ -9,3 +9,8 @@
 
 ### feature
 - add prettier format whole folder
+
+## 0.0.13
+
+### feature
+- add index generator with js files
