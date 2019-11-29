@@ -17,8 +17,8 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(toTsCommand);
   context.subscriptions.push(switchTypeInterfaceCommand);
   context.subscriptions.push(createIndexCommand('js'));
-  context.subscriptions.push(createIndexCommand('both'));
   context.subscriptions.push(createIndexOnlyTargetCommand('js'));
+  context.subscriptions.push(createIndexCommand('both'));
   context.subscriptions.push(createIndexOnlyTargetCommand('both'));
 }
 
