@@ -14,3 +14,8 @@
 
 ### feature
 - add index generator with js files
+- 
+## 0.0.14
+
+### feature
+- fix index with js
