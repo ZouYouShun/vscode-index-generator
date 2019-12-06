@@ -4,7 +4,7 @@
   "publisher": "declanzou",
   "description": "Create index.ts(js) for folder.",
   "repository": "https://github.com/ZouYouShun/vscode-index-generator",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "engines": {
     "vscode": "^1.40.0"
   },
@@ -42,6 +42,10 @@
       {
         "command": "index-generator.switchTypeInterface",
         "title": "Index-Generator: Switch Type and Interface"
+      },
+      {
+        "command": "index-generator.switchCamelize",
+        "title": "Index-Generator: switch word between camelize and underline"
       },
       {
         "command": "index-generator.toTs",
@@ -83,7 +87,7 @@
     "eslint": "^6.3.0",
     "fs-extra": "^8.1.0",
     "ignore": "^5.1.2",
-    "prettier": "^1.18.2",
+    "prettier": "^1.19.1",
     "shelljs": "^0.8.3",
     "ncp": "^2.0.0"
   }
