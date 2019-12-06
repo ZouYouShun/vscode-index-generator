@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { camelize, uncamelize } from '../../utils';
+import { camelize, uncamelize, firstLowerCase } from '../../utils';
 import { extensionNamespace } from '../../utils/extensionNamespace';
 
 export const camelizeCommand = vscode.commands.registerCommand(
@@ -15,8 +15,15 @@ export const camelizeCommand = vscode.commands.registerCommand(
 
       editor.edit((editBuilder) => {
         try {
+          const isFirstLowerCase = vscode.workspace
+            .getConfiguration(extensionNamespace)
+            .get<boolean>('firstLowerCase');
+
           if (word.includes('_')) {
             word = camelize(word);
+            if (isFirstLowerCase) {
+              word = firstLowerCase(word);
+            }
           } else {
             word = uncamelize(word);
           }

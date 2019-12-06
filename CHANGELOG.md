@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.0.16
+### feature
+- add firstLowerCase config
 
 ## 0.0.15
 ### feature
