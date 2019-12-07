@@ -22,6 +22,16 @@
     "dbaeumer.vscode-eslint"
   ],
   "contributes": {
+    "snippets": [
+      {
+        "language": "typescriptreact",
+        "path": "./snippets/snippets-ts.json"
+      },
+      {
+        "language": "typescript",
+        "path": "./snippets/snippets-ts.json"
+      }
+    ],
     "commands": [
       {
         "command": "index-generator.createbothIndex",
