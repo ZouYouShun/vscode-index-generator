@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.17
+### feature
+- add crius props generator
+- 
 ## 0.0.16
 ### feature
 - add firstLowerCase config

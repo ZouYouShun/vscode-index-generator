@@ -9,30 +9,34 @@ export const camelizeCommand = vscode.commands.registerCommand(
     let editor = vscode.window.activeTextEditor;
 
     if (editor) {
-      const { document, selection } = editor;
+      const { document, selections } = editor;
 
-      let word = document.getText(selection);
+      const isFirstLowerCase = vscode.workspace
+        .getConfiguration(extensionNamespace)
+        .get<boolean>('firstLowerCase');
 
       editor.edit((editBuilder) => {
-        try {
-          const isFirstLowerCase = vscode.workspace
-            .getConfiguration(extensionNamespace)
-            .get<boolean>('firstLowerCase');
-
-          if (word.includes('_')) {
-            word = camelize(word);
-            if (isFirstLowerCase) {
-              word = firstLowerCase(word);
+        selections.forEach((selection) => {
+          let word = document.getText(selection);
+          try {
+            if (word.includes('_')) {
+              word = camelize(word);
+              if (isFirstLowerCase) {
+                word = firstLowerCase(word);
+              }
+            } else {
+              word = uncamelize(word);
             }
-          } else {
-            word = uncamelize(word);
-          }
 
-          editBuilder.replace(selection, word);
-        } catch (error) {
-          vscode.window.showErrorMessage(error);
-        }
+            editBuilder.replace(selection, word);
+          } catch (error) {
+            vscode.window.showErrorMessage(error);
+          }
+        });
       });
     }
   },
 );
+// vscode.workspace
+//       .openTextDocument({ language: 'typescript', content: 'eewq' })
+//       .then((doc) => vscode.window.showTextDocument(doc));

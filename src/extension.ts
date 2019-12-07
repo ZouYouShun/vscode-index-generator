@@ -7,6 +7,7 @@ import {
   toTsCommand,
   prettierFormatCommand,
   camelizeCommand,
+  criusPropsCommand,
 } from './commands';
 import { extensionNamespace } from './utils/extensionNamespace';
 import { OutputChannel } from './utils';
@@ -18,6 +19,8 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(toTsCommand);
   context.subscriptions.push(camelizeCommand);
   context.subscriptions.push(switchTypeInterfaceCommand);
+  context.subscriptions.push(criusPropsCommand);
+
   context.subscriptions.push(createIndexCommand('js'));
   context.subscriptions.push(createIndexOnlyTargetCommand('js'));
   context.subscriptions.push(createIndexCommand('both'));

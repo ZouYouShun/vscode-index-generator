@@ -4,7 +4,7 @@
   "publisher": "declanzou",
   "description": "Create index.ts(js) for folder.",
   "repository": "https://github.com/ZouYouShun/vscode-index-generator",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "engines": {
     "vscode": "^1.40.0"
   },
@@ -54,6 +54,10 @@
       {
         "command": "index-generator.prettier",
         "title": "Index-Generator: prettier all file."
+      },
+      {
+        "command": "index-generator.criusProps",
+        "title": "Index-Generator: create crius props with example"
       }
     ],
     "configuration": {
@@ -94,13 +98,9 @@
     "vscode-test": "^1.2.2"
   },
   "dependencies": {
-    "chokidar": "^2.1.5",
-    "commander": "^2.20.0",
     "eslint": "^6.3.0",
     "fs-extra": "^8.1.0",
     "ignore": "^5.1.2",
-    "prettier": "^1.19.1",
-    "shelljs": "^0.8.3",
-    "ncp": "^2.0.0"
+    "prettier": "^1.19.1"
   }
 }
