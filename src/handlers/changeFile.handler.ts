@@ -44,7 +44,7 @@ export class ChangeFileHandler {
     cb?: (fromUrl: string) => Promise<{ content: string; ext: string }>,
   ) {
     try {
-      this.fileTree.forEach(async (fromUrl) => {
+      for (const fromUrl of this.fileTree) {
         const regex = new RegExp(`\.${this.options.from}$`, 'gi');
 
         if (regex.test(fromUrl)) {
@@ -69,7 +69,30 @@ export class ChangeFileHandler {
             `${chalk.green(`To ${path.extname(toUrl)}: `)} ${toUrl}`,
           );
         }
-      });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async formatTsCode() {
+    try {
+      for (const fromUrl of this.fileTree) {
+        if (new RegExp(`\.ts$|\.tsx$`, 'gi').test(fromUrl)) {
+          await openDocument(fromUrl);
+          sleep(100);
+
+          await checkExtensionLoaded('rbbit.typescript-hero');
+          await executeCommand('typescriptHero.imports.organize');
+          sleep(300);
+
+          await checkExtensionLoaded('esbenp.prettier-vscode');
+          await executeCommand('editor.action.formatDocument');
+          sleep(300);
+
+          await executeCommand('workbench.action.files.saveAll');
+        }
+      }
     } catch (error) {
       console.log(error);
     }
@@ -101,11 +124,8 @@ export class ChangeFileHandler {
 
         // TODO: change type to interface, and add config to do this.
 
-        await sleep(500);
-
         await checkExtensionLoaded('esbenp.prettier-vscode');
         await executeCommand('editor.action.formatDocument');
-        await sleep(500);
 
         await checkExtensionLoaded('dbaeumer.vscode-eslint');
         await executeCommand('eslint.executeAutofix');

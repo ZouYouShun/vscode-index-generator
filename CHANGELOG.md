@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.0.22
+### feature
+- add add formatSort cmd
+### bug fix
+- fix to ts format issue
+  
+- 
 ## 0.0.18
 ### feature
 - add crius step snippets
