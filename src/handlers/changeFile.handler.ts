@@ -80,15 +80,14 @@ export class ChangeFileHandler {
       for (const fromUrl of this.fileTree) {
         if (new RegExp(`\.ts$|\.tsx$`, 'gi').test(fromUrl)) {
           await openDocument(fromUrl);
-          sleep(100);
 
           await checkExtensionLoaded('rbbit.typescript-hero');
           await executeCommand('typescriptHero.imports.organize');
-          sleep(300);
+          sleep(100);
 
           await checkExtensionLoaded('esbenp.prettier-vscode');
           await executeCommand('editor.action.formatDocument');
-          sleep(300);
+          sleep(100);
 
           await executeCommand('workbench.action.files.saveAll');
         }
