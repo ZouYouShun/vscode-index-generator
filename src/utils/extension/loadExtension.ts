@@ -10,7 +10,7 @@ export function checkExtensionLoaded(extensionName: string) {
           resolve();
         },
         () => {
-          reject('Extension activation failed');
+          reject(`Extension ${extensionName} activation failed`);
         },
       );
     }
