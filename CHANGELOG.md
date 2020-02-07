@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.3
+### bug fix
+- make format and to ts cmd more stable
+
 ## 0.0.22
 ### feature
 - add add formatSort cmd
