@@ -1,5 +1,4 @@
 import chalk from 'chalk';
-import * as eslint from 'eslint';
 import * as fs from 'fs-extra';
 import ignore from 'ignore';
 import * as path from 'path';
@@ -16,11 +15,12 @@ export class PrettierGenerator {
 
   ig = ignore();
 
-  Linter = new eslint.Linter();
-
   constructor(target: string, options: IndexGeneratorOptions) {
     this.url = target;
-    this.perttierConfig = require(options.perttierConfig);
+
+    if (fs.existsSync(options.prettierConfig)) {
+      this.perttierConfig = require(options.prettierConfig);
+    }
 
     if (fs.existsSync(options.ignore)) {
       this.ignore = require(options.ignore);
@@ -35,7 +35,7 @@ export class PrettierGenerator {
     }
     const filePaths = fs.readdirSync(dirUrl);
 
-    filePaths.forEach(filePath => {
+    filePaths.forEach((filePath) => {
       const absoluteFilePath = path.join(dirUrl, filePath);
       try {
         const status = fs.statSync(absoluteFilePath);
@@ -54,14 +54,16 @@ export class PrettierGenerator {
 
           if (result) {
             OutputChannel.appendLine(
-              `${chalk.green('prettier format with: ')} ${absoluteFilePath}`
+              `${chalk.green('prettier format with: ')} ${absoluteFilePath}`,
             );
 
             fs.writeFileSync(absoluteFilePath, result);
           }
         }
       } catch (error) {
-        OutputChannel.appendLine(`${chalk.red('error with ')} ${absoluteFilePath}`);
+        OutputChannel.appendLine(
+          `${chalk.red('error with ')} ${absoluteFilePath}`,
+        );
         this.error.push(absoluteFilePath);
       }
     });
@@ -76,12 +78,12 @@ export class PrettierGenerator {
     ) {
       result = prettier.format(content, {
         parser: 'typescript',
-        ...this.perttierConfig
+        ...this.perttierConfig,
       });
     } else if (new RegExp(`\.js$|\.jsx$`, 'gi').test(absoluteFilePath)) {
       result = prettier.format(content, {
         parser: 'babylon',
-        ...this.perttierConfig
+        ...this.perttierConfig,
       });
     }
     return result;
@@ -94,18 +96,7 @@ export class PrettierGenerator {
     }
 
     return (
-      this.ignore &&
-      (this.ignore.exclude && this.ig.ignores(path.join(checkUrl)))
+      this.ignore && this.ignore.exclude && this.ig.ignores(path.join(checkUrl))
     );
   }
 }
-
-// this.Linter.verifyAndFix(result, {}).output;
-
-// const eslintConfig = require('/Users/declan.zou/Project/RC/integration-apps-gitlab/ringcentral-js-widgets/eslint-settings/.eslintrc.js');
-
-// const a = this.Linter.verifyAndFix(
-//   `const a =
-//  "123"`,
-//   {}
-// ).output;

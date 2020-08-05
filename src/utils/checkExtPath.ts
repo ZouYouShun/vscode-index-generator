@@ -1,4 +1,4 @@
-import { escapeRegExp } from "./escapeRegExp";
+import { escapeRegExp } from './escapeRegExp';
 
 export const checkExtPath = (exts: string[], filePath: string) => {
   function regexString(cb: (ext: string) => string) {

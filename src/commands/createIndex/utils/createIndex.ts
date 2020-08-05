@@ -10,14 +10,14 @@ export async function createIndex(
   additionProps: IndexGeneratorOptions = {},
 ) {
   const { rootPath } = vscode.workspace;
-  const { perttierConfig, ignore } = getConfigs(rootPath);
+  const { prettierConfig, ignore } = getConfigs(rootPath);
 
   const dirPath = await askTargetFolder();
   try {
     new IndexGenerator(dirPath, {
       force: true,
       type,
-      perttierConfig,
+      prettierConfig,
       ignore,
       ...additionProps,
     }).createFile();

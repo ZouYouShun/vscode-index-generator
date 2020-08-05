@@ -10,7 +10,11 @@ export const createIndexOnlyTargetCommand = (
   vscode.commands.registerCommand(
     `${extensionNamespace}.create${type}IndexOnlyTarget`,
     async () => {
-      await createIndex(type, { onlyTarget: true });
-      vscode.window.showInformationMessage('Create index successful!', 'OK');
+      try {
+        await createIndex(type, { onlyTarget: true });
+        vscode.window.showInformationMessage('Create index successful!', 'OK');
+      } catch (error) {
+        vscode.window.showErrorMessage(error);
+      }
     },
   );

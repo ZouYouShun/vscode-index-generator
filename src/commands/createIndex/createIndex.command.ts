@@ -10,7 +10,11 @@ export const createIndexCommand = (
   vscode.commands.registerCommand(
     `${extensionNamespace}.create${type}Index`,
     async () => {
-      await createIndex(type);
-      vscode.window.showInformationMessage('Create index successful!', 'OK');
+      try {
+        await createIndex(type);
+        vscode.window.showInformationMessage('Create index successful!', 'OK');
+      } catch (error) {
+        vscode.window.showErrorMessage(error);
+      }
     },
   );

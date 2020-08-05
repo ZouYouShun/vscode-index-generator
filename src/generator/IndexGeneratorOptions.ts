@@ -4,5 +4,5 @@ export type IndexGeneratorOptions = {
   type?: 'js' | 'ts' | 'both';
   ignore?: string;
   onlyTarget?: boolean;
-  perttierConfig?: string;
+  prettierConfig?: string;
 };

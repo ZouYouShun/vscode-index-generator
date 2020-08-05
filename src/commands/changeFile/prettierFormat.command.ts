@@ -12,9 +12,9 @@ export const prettierFormatCommand = vscode.commands.registerCommand(
       const dirPath = await askTargetFolder();
       const { rootPath } = vscode.workspace;
 
-      const { perttierConfig, ignore } = getConfigs(rootPath);
+      const { prettierConfig, ignore } = getConfigs(rootPath);
 
-      new PrettierGenerator(dirPath, { perttierConfig, ignore }).createFile();
+      new PrettierGenerator(dirPath, { prettierConfig, ignore }).createFile();
 
       vscode.window.showInformationMessage('prettier run complete!', 'OK');
     } catch (error) {

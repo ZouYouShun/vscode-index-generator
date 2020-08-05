@@ -4,7 +4,8 @@
   "publisher": "declanzou",
   "description": "Create index.ts(js) for folder.",
   "repository": "https://github.com/ZouYouShun/vscode-index-generator",
-  "version": "0.0.16",
+  "version": "0.1.1",
+  "icon": "icon.png",
   "engines": {
     "vscode": "^1.40.0"
   },
@@ -54,6 +55,17 @@
       {
         "command": "index-generator.prettier",
         "title": "Index-Generator: prettier all file."
+      },
+      {
+        "command": "index-generator.formatSortTsOnce",
+        "title": "Index-Generator: format and sort code.",
+        "key": "ctrl+shift+i",
+        "mac": "cmd+shift+i",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "index-generator.formatSortTs",
+        "title": "Index-Generator: format and sort folder ts code with typescript hero and prettier."
       }
     ],
     "configuration": {
@@ -65,42 +77,45 @@
           "default": true,
           "description": "is the first word to be lowercase",
           "scope": "window"
+        },
+        "index-generator.camelizeSeparator": {
+          "type": "string",
+          "default": "_",
+          "description": "camelize separator char",
+          "scope": "window"
         }
       }
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "rm -rf ./out && npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile",
-    "test": "node ./out/test/runTest.js"
+    "test": "node ./out/test/runTest.js",
+    "start": "npm run watch"
   },
   "devDependencies": {
-    "@types/glob": "^7.1.1",
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^12.11.7",
-    "@types/vscode": "^1.40.0",
-    "@types/ncp": "^2.0.1",
     "@types/chokidar": "^2.1.3",
     "@types/eslint": "^6.1.1",
     "@types/fs-extra": "^8.0.0",
+    "@types/glob": "^7.1.1",
+    "@types/mocha": "^5.2.7",
+    "@types/ncp": "^2.0.1",
+    "@types/node": "^12.11.7",
     "@types/prettier": "^1.18.2",
     "@types/shelljs": "^0.8.5",
+    "@types/vscode": "^1.40.0",
     "glob": "^7.1.5",
     "mocha": "^6.2.2",
-    "typescript": "^3.6.4",
     "tslint": "^5.20.0",
+    "typescript": "^3.6.4",
     "vscode-test": "^1.2.2"
   },
   "dependencies": {
-    "chokidar": "^2.1.5",
-    "commander": "^2.20.0",
     "eslint": "^6.3.0",
     "fs-extra": "^8.1.0",
     "ignore": "^5.1.2",
-    "prettier": "^1.19.1",
-    "shelljs": "^0.8.3",
-    "ncp": "^2.0.0"
+    "prettier": "^1.19.1"
   }
 }

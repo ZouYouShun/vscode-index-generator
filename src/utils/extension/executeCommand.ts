@@ -1,13 +1,13 @@
 import * as vscode from 'vscode';
 
-export function executeCommand(extensionName: string) {
+export function executeCommand(cmdName: string, ...args: any) {
   return new Promise((resolve, reject) => {
-    vscode.commands.executeCommand(extensionName).then(
-      () => {
-        resolve();
+    vscode.commands.executeCommand(cmdName, ...args).then(
+      (e) => {
+        resolve(e);
       },
-      () => {
-        reject('Extension activation failed');
+      (error) => {
+        reject({ message: `Extension ${cmdName} execute failed`, error });
       },
     );
   });

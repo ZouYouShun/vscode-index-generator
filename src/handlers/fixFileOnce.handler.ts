@@ -6,28 +6,44 @@ import {
 } from '../utils';
 
 export class FixFileOnceHandler {
-  constructor(private target: string) {}
+  get tsxFileName() {
+    const regex = new RegExp(`\.js$`, 'gi');
+    const toUrl = this.target.replace(regex, `.tsx`);
+    return toUrl;
+  }
 
-  async fixFile() {
+  constructor(private target?: string) {}
+
+  async toTs() {
+    await openDocument(this.target);
+
     await checkExtensionLoaded(
       'mohsen1.react-javascript-to-typescript-transform-vscode',
     );
 
-    await executeCommand('extension.convertReactToTypeScript');
+    try {
+      await executeCommand('extension.convertReactToTypeScript');
+    } catch (error) {
+      console.log(`convert to ts has problem but convert success.`);
+    }
 
-    const regex = new RegExp(`\.js$`, 'gi');
-    const toUrl = this.target.replace(regex, `.tsx`);
-    await openDocument(toUrl);
+    await this.openFileAndFormat(this.tsxFileName);
+  }
 
+  async openFileAndFormat(target?: string) {
+    await openDocument(target || this.target);
+    await this.formatAndSort();
+  }
+
+  async formatAndSort() {
     await checkExtensionLoaded('rbbit.typescript-hero');
     await executeCommand('typescriptHero.imports.organize');
-
-    // await sleep(300);
+    await sleep(300);
 
     await checkExtensionLoaded('esbenp.prettier-vscode');
     await executeCommand('editor.action.formatDocument');
-    await executeCommand('workbench.action.files.saveAll');
+    await sleep(100);
 
-    // await sleep(500);
+    await executeCommand('workbench.action.files.saveAll');
   }
 }

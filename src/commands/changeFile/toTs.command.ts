@@ -1,9 +1,8 @@
-import * as path from 'path';
 import * as vscode from 'vscode';
 
 import { ChangeFileHandler } from '../../handlers/changeFile.handler';
-import { extensionNamespace } from '../../utils/extensionNamespace';
 import { askTargetFolder } from '../../utils';
+import { extensionNamespace } from '../../utils/extensionNamespace';
 
 export const toTsCommand = vscode.commands.registerCommand(
   `${extensionNamespace}.toTs`,

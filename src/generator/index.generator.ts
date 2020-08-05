@@ -7,7 +7,7 @@ import * as prettier from 'prettier';
 import { IndexGeneratorOptions } from './IndexGeneratorOptions';
 import { Lib } from '../utils/lib';
 import { checkExtPath } from '../utils/checkExtPath';
-import { escapeRegExp } from "../utils/escapeRegExp";
+import { escapeRegExp } from '../utils/escapeRegExp';
 import { OutputChannel } from '../utils';
 
 export interface IndexIgnoreOptions {
@@ -177,12 +177,12 @@ export class IndexGenerator {
         OutputChannel.appendLine(`${chalk.green('create ')} ${targetUrl}`);
       }
 
-      let perttierConfig = {};
+      let prettierConfig = {};
       if (
-        this.options.perttierConfig &&
-        fs.existsSync(this.options.perttierConfig)
+        this.options.prettierConfig &&
+        fs.existsSync(this.options.prettierConfig)
       ) {
-        perttierConfig = require(this.options.perttierConfig);
+        prettierConfig = require(this.options.prettierConfig);
       }
 
       try {
@@ -197,7 +197,7 @@ export class IndexGenerator {
             [...exportDefaultContentObj].join(os.EOL),
           {
             parser: 'babel',
-            ...perttierConfig,
+            ...prettierConfig,
           },
         );
         fs.writeFileSync(targetUrl, result);
