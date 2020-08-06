@@ -4,7 +4,7 @@
   "publisher": "declanzou",
   "description": "Create index.ts(js) for folder.",
   "repository": "https://github.com/ZouYouShun/vscode-index-generator",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.40.0"
@@ -58,14 +58,18 @@
       },
       {
         "command": "index-generator.formatSortTsOnce",
-        "title": "Index-Generator: format and sort code.",
-        "key": "ctrl+shift+i",
-        "mac": "cmd+shift+i",
-        "when": "editorTextFocus"
+        "title": "Index-Generator: format and sort code."
       },
       {
         "command": "index-generator.formatSortTs",
         "title": "Index-Generator: format and sort folder ts code with typescript hero and prettier."
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "index-generator.formatSortTsOnce",
+        "key": "shift+cmd+a",
+        "when": "editorTextFocus"
       }
     ],
     "configuration": {
