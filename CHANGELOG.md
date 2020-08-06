@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.1.2
+
+### feature
+
+- add keybinding with format and Sort
+
 ## 0.1.1
 
 ### feature
