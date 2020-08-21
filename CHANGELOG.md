@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.1.3
+
+### Break Change
+
+- remove format and Sort auto save file
+
 ## 0.1.2
 
 ### feature
