@@ -96,6 +96,7 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile",
+    "package": "vsce package",
     "test": "node ./out/test/runTest.js",
     "start": "npm run watch"
   },
