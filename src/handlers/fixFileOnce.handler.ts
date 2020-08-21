@@ -42,8 +42,5 @@ export class FixFileOnceHandler {
 
     await checkExtensionLoaded('esbenp.prettier-vscode');
     await executeCommand('editor.action.formatDocument');
-    await sleep(100);
-
-    await executeCommand('workbench.action.files.saveAll');
   }
 }
