@@ -7,12 +7,12 @@ import {
 
 export class FixFileOnceHandler {
   get tsxFileName() {
-    const regex = new RegExp(`\.js$`, 'gi');
+    const regex = new RegExp(`${this.replaceRegex}$`, 'gi');
     const toUrl = this.target.replace(regex, `.tsx`);
     return toUrl;
   }
 
-  constructor(private target?: string) {}
+  constructor(private target?: string, private replaceRegex: string = 'js') {}
 
   async toTs() {
     await openDocument(this.target);

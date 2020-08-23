@@ -74,7 +74,7 @@ export class ChangeFileHandler {
   }
 
   async toTs() {
-    this.options.from = 'js';
+    this.options.from = '\\.jsx|\\.js';
 
     return await this.changeExt(async (fromUrl) => {
       let content = replaceRequireToImport(fs.readFileSync(fromUrl).toString());
@@ -83,7 +83,7 @@ export class ChangeFileHandler {
       if (content.includes('React')) {
         ext = 'tsx';
 
-        await new FixFileOnceHandler(fromUrl).toTs();
+        await new FixFileOnceHandler(fromUrl, this.options.from).toTs();
 
         content = undefined;
       }
