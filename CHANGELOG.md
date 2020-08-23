@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.1.4
+
+### Feature
+
+- Add support with jsx to tsx
+
 ## 0.1.3
 
 ### Break Change
