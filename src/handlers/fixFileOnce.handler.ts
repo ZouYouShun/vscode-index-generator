@@ -30,6 +30,14 @@ export class FixFileOnceHandler {
     await this.openFileAndFormat(this.tsxFileName);
   }
 
+  async openAndRun(commands: string[]) {
+    await openDocument(this.target);
+    for (const command of commands) {
+      await executeCommand(command);
+      await sleep(300);
+    }
+  }
+
   async openFileAndFormat(target?: string) {
     await openDocument(target || this.target);
     await this.formatAndSort();

@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.1.5
+
+### Feature
+
+- Support run commands with folder all files
+
 ## 0.1.4
 
 ### Feature

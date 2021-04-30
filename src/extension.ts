@@ -6,6 +6,7 @@ import {
   createIndexOnlyTargetCommand,
   formatSortTsCommand,
   formatSortTsOnceCommand,
+  openAndRunCommand,
   prettierFormatCommand,
   switchTypeInterfaceCommand,
   toTsCommand,
@@ -16,6 +17,7 @@ import { extensionNamespace } from './utils/extensionNamespace';
 export function activate(context: vscode.ExtensionContext) {
   OutputChannel.appendLine(`"${extensionNamespace}" is now active!`, false);
 
+  context.subscriptions.push(openAndRunCommand);
   context.subscriptions.push(formatSortTsCommand);
   context.subscriptions.push(formatSortTsOnceCommand);
   context.subscriptions.push(prettierFormatCommand);
