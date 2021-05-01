@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.1.6
+
+### Fix
+
+- Change default export to `export { default as Name } from './Name';`
+
 ## 0.1.5
 
 ### Feature
