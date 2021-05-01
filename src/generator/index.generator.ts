@@ -4,11 +4,12 @@ import ignore from 'ignore';
 import * as os from 'os';
 import * as path from 'path';
 import * as prettier from 'prettier';
-import { IndexGeneratorOptions } from './IndexGeneratorOptions';
-import { Lib } from '../utils/lib';
+
+import { OutputChannel } from '../utils';
 import { checkExtPath } from '../utils/checkExtPath';
 import { escapeRegExp } from '../utils/escapeRegExp';
-import { OutputChannel } from '../utils';
+import { Lib } from '../utils/lib';
+import { IndexGeneratorOptions } from './IndexGeneratorOptions';
 
 export interface IndexIgnoreOptions {
   exclude: string[];
@@ -80,8 +81,9 @@ export class IndexGenerator {
             const content = fs.readFileSync(dirIndex).toString();
 
             if (this.hasDefault(content)) {
-              importContentObj.add(`import ${filePath} from './${filePath}';`);
-              exportObjectContentObj.add(filePath);
+              exportDefaultContentObj.add(
+                `export { default as ${filePath} } from './${filePath}';`,
+              );
             }
 
             if (this.checkHasOtherExport(content)) {
@@ -125,8 +127,9 @@ export class IndexGenerator {
             ) {
               let count = 0;
               if (this.hasDefault(content)) {
-                importContentObj.add(`import ${dirName} from './${dirName}';`);
-                exportDefaultContentObj.add(`export default ${dirName};`);
+                exportDefaultContentObj.add(
+                  `export { default as ${filePath} } from './${filePath}';`,
+                );
                 count++;
               }
 
@@ -144,10 +147,10 @@ export class IndexGenerator {
 
         let count = 0;
         if (this.hasDefault(content)) {
-          importContentObj.add(`import ${filePath} from './${filePath}';`);
-
           if (filePath === dirName) {
-            exportDefaultContentObj.add(`export default ${filePath};`);
+            exportDefaultContentObj.add(
+              `export { default as ${filePath} } from './${filePath}';`,
+            );
           } else {
             exportObjectContentObj.add(filePath);
           }

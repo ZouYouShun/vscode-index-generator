@@ -67,9 +67,7 @@ export class ChangeFileHandler {
 
   async openAndRun(commands: string[]) {
     for (const fromUrl of this.fileTree) {
-      if (new RegExp(`\.ts$|\.tsx$`, 'gi').test(fromUrl)) {
-        await new FixFileOnceHandler(fromUrl).openAndRun(commands);
-      }
+      await new FixFileOnceHandler(fromUrl).openAndRun(commands);
     }
   }
 
