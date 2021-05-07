@@ -12,7 +12,7 @@ export const clearEmptyFolderCommand = vscode.commands.registerCommand(
 
       await new ChangeFileHandler(dirPath, undefined, true).clearEmptyFolder();
 
-      vscode.window.showInformationMessage('format and sort complete!', 'OK');
+      vscode.window.showInformationMessage('clear empty folder complete!', 'OK');
     } catch (error) {
       vscode.window.showErrorMessage(error);
     }
