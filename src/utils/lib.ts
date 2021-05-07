@@ -85,21 +85,21 @@ export namespace Lib {
     }
   };
 
-  export const getFileTree = (sourceUrl: string, isDir = false): string[] => {
+  export const getFileTree = (sourceUrl: string, onlyDir = false): string[] => {
     const returnObj: string[] = [];
     const files = fs.readdirSync(sourceUrl);
 
     files.forEach((file) => {
       const url = path.join(sourceUrl, file);
 
-      const checkDir = fs.lstatSync(url).isDirectory();
+      const isDir = fs.lstatSync(url).isDirectory();
 
-      if (isDir) {
-        if (checkDir) {
+      if (onlyDir) {
+        if (isDir) {
           return returnObj.push(url);
         }
       } else {
-        if (checkDir) {
+        if (isDir) {
           returnObj.push(...getFileTree(url));
         } else {
           returnObj.push(url);

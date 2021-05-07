@@ -13,14 +13,15 @@ export interface ChangeFileHandlerOptions {
 }
 
 export class ChangeFileHandler {
-  fileTree = Lib.getFileTree(this.target);
+  fileTree = Lib.getFileTree(this.target, this.isDir);
 
   constructor(
     private target: string,
     private options: ChangeFileHandlerOptions = {} as any,
+    private isDir: boolean = false,
   ) {}
 
-  async clearEmpty() {
+  async clearEmptyFolder() {
     this.fileTree.forEach((url) => {
       const stats = fs.statSync(url);
       const file = path.parse(url);

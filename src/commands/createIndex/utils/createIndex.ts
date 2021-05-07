@@ -13,16 +13,12 @@ export async function createIndex(
   const { prettierConfig, ignore } = getConfigs(rootPath);
 
   const dirPath = await askTargetFolder();
-  if (!dirPath) {
-    throw new Error('');
-  }
-  try {
-    new IndexGenerator(dirPath, {
-      force: true,
-      type,
-      prettierConfig,
-      ignore,
-      ...additionProps,
-    }).createFile();
-  } catch (error) {}
+
+  new IndexGenerator(dirPath, {
+    force: true,
+    type,
+    prettierConfig,
+    ignore,
+    ...additionProps,
+  }).createFile();
 }

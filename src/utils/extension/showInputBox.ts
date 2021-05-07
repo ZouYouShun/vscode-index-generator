@@ -7,7 +7,11 @@ export function showInputBox(
   return new Promise<string>((resolve, reject) => {
     vscode.window.showInputBox(options, token).then(
       (dirPath) => {
-        resolve(dirPath);
+        if (!dirPath) {
+          reject('');
+        } else {
+          resolve(dirPath);
+        }
       },
       () => {
         reject();

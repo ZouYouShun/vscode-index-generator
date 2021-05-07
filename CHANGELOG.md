@@ -1,5 +1,15 @@
 # Change Log
 
+## 1.0.0
+
+### Feature
+
+- Support clear empty folder command
+
+### Fix
+
+- Complete export default logic
+
 ## 0.1.6
 
 ### Fix

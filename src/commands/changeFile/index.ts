@@ -1,4 +1,5 @@
 export * from './camelize.command';
+export * from './clearEmpty.command';
 export * from './formatSortTs.command';
 export * from './formatSortTsOnce.command';
 export * from './openAndRun.command';
