@@ -4,7 +4,7 @@
   "publisher": "declanzou",
   "description": "Create index.ts(js) for folder.",
   "repository": "https://github.com/ZouYouShun/vscode-index-generator",
-  "version": "0.1.6",
+  "version": "1.0.0",
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.40.0"
@@ -39,6 +39,10 @@
       {
         "command": "index-generator.createjsIndexOnlyTarget",
         "title": "Index-Generator: (js)Create only target file index file with this target folder."
+      },
+      {
+        "command": "index-generator.clearEmptyFolder",
+        "title": "Index-Generator: Clear all empty folder with this target folder and sub folder."
       },
       {
         "command": "index-generator.switchTypeInterface",
@@ -117,16 +121,14 @@
     "@types/vscode": "^1.40.0",
     "glob": "^7.1.5",
     "mocha": "^6.2.2",
-    "@typescript-eslint/eslint-plugin": "^4.14.1",
-    "@typescript-eslint/parser": "^4.14.1",
-    "eslint": "^7.19.0",
+    "tslint": "^5.20.0",
     "typescript": "^3.6.4",
     "vscode-test": "^1.2.2"
   },
   "dependencies": {
-    "eslint": "^6.3.0",
-    "fs-extra": "^8.1.0",
-    "ignore": "^5.1.2",
-    "prettier": "^1.19.1"
+    "eslint": "^7.25.0",
+    "fs-extra": "^10.0.0",
+    "ignore": "^5.1.8",
+    "prettier": "^2.2.1"
   }
 }
