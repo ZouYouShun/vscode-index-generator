@@ -15,7 +15,7 @@ export const toTsCommand = vscode.commands.registerCommand(
         'change to typescript successful!',
         'OK',
       );
-    } catch (error) {
+    } catch (error: any) {
       vscode.window.showErrorMessage(error);
     }
   },

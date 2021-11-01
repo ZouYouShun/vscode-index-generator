@@ -26,7 +26,7 @@ export const openAndRunCommand = vscode.commands.registerCommand(
           await new ChangeFileHandler(dirPath).openAndRun(commands);
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       vscode.window.showErrorMessage(error);
     }
   },

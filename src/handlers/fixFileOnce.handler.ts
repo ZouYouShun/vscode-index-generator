@@ -7,6 +7,9 @@ import {
 
 export class FixFileOnceHandler {
   get tsxFileName() {
+    if (!this.target) {
+      return;
+    }
     const regex = new RegExp(`${this.replaceRegex}$`, 'gi');
     const toUrl = this.target.replace(regex, `.tsx`);
     return toUrl;
@@ -15,6 +18,9 @@ export class FixFileOnceHandler {
   constructor(private target?: string, private replaceRegex: string = 'js') {}
 
   async toTs() {
+    if (!this.target) {
+      return;
+    }
     await openDocument(this.target);
 
     await checkExtensionLoaded(
@@ -31,6 +37,9 @@ export class FixFileOnceHandler {
   }
 
   async openAndRun(commands: string[]) {
+    if (!this.target) {
+      return;
+    }
     await openDocument(this.target);
     for (const command of commands) {
       await executeCommand(command);
@@ -39,7 +48,7 @@ export class FixFileOnceHandler {
   }
 
   async openFileAndFormat(target?: string) {
-    await openDocument(target || this.target);
+    await openDocument(target || this.target!);
     await this.formatAndSort();
   }
 

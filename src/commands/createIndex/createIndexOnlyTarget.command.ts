@@ -14,7 +14,7 @@ export const createIndexOnlyTargetCommand = (
         await createIndex(type, { onlyTarget: true });
         vscode.window.showInformationMessage('Create index successful!', 'OK');
       } catch (error) {
-        vscode.window.showErrorMessage(error);
+        vscode.window.showErrorMessage(error as string);
       }
     },
   );

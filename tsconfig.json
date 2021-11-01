@@ -1,5 +1,9 @@
 {
 	"compilerOptions": {
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"importHelpers": true,
+		"removeComments": true,
 		"module": "commonjs",
 		"target": "es6",
 		"outDir": "out",

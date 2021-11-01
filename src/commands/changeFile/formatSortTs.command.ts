@@ -13,7 +13,7 @@ export const formatSortTsCommand = vscode.commands.registerCommand(
       await new ChangeFileHandler(dirPath).formatTsCode();
 
       vscode.window.showInformationMessage('format and sort complete!', 'OK');
-    } catch (error) {
+    } catch (error: any) {
       vscode.window.showErrorMessage(error);
     }
   },

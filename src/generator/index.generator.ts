@@ -24,13 +24,13 @@ type ConvertOptions = {
 
 export class IndexGenerator {
   ig = ignore();
-  ignore: IndexIgnoreOptions;
+  ignore?: IndexIgnoreOptions;
 
   constructor(private target: string, private options: IndexGeneratorOptions) {
     if (options.ignore && fs.existsSync(options.ignore)) {
       this.ignore = require(options.ignore);
 
-      this.ig.add(this.ignore.exclude);
+      this.ig.add(this.ignore!.exclude);
     }
   }
 
@@ -40,7 +40,7 @@ export class IndexGenerator {
     }
     const filePaths = fs.readdirSync(dirUrl);
 
-    let dirDefaultName: string;
+    let dirDefaultName: string | undefined = undefined;
     const exportAllSet = new Set();
     const exportAsDefaultSet = new Set();
 
@@ -53,7 +53,7 @@ export class IndexGenerator {
     let exportCount = 0;
 
     filePaths.forEach((filePath) => {
-      const absoluteFilePath = path.join(dirUrl, filePath);
+      const absoluteFilePath = path.join(dirUrl!, filePath);
 
       if (this.checkPathVariable(absoluteFilePath) || filePath === 'scss') {
         return 0;
@@ -109,7 +109,7 @@ export class IndexGenerator {
           ) {
             if (
               this.convertIndexToFile({
-                dirUrl,
+                dirUrl: dirUrl!,
                 dirName,
                 ext: fileExt,
                 template: content,

@@ -13,7 +13,7 @@ export const createIndexCommand = (
       try {
         await createIndex(type);
         vscode.window.showInformationMessage('Create index successful!', 'OK');
-      } catch (error) {
+      } catch (error: any) {
         vscode.window.showErrorMessage(error);
       }
     },

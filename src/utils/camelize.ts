@@ -1,4 +1,4 @@
-function clearString(s) {
+function clearString(s: string) {
   const pattern = new RegExp(/[.\-_]/);
   let rs = '';
   for (let i = 0; i < s.length; i++) {
@@ -11,7 +11,7 @@ function clearString(s) {
 export function camelize(str: string) {
   str = ' ' + str;
   str = clearString(str);
-  return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(match, index) {
+  return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
     if (+match === 0) {
       return '';
     } // or if (/\s+/.test(match)) for white spaces
@@ -19,14 +19,14 @@ export function camelize(str: string) {
   });
 }
 
-export function uncamelize(text, separator = '_') {
+export function uncamelize(text: string, separator = '_') {
   if ('undefined' === typeof separator) {
     separator = '_';
   }
 
   // Replace all capital letters and group of numbers by the
   // separator followed by lowercase version of the match
-  text = text.replace(/[A-Z]|\d+/g, function(match) {
+  text = text.replace(/[A-Z]|\d+/g, function (match) {
     return separator + match.toLowerCase();
   });
 
@@ -38,6 +38,6 @@ export function upperCaseArray(str: string) {
   return str.split(/(?=[A-Z])/);
 }
 
-export function firstLowerCase(input): string {
+export function firstLowerCase(input: string): string {
   return input[0].toLowerCase() + input.substr(1);
 }

@@ -36,7 +36,9 @@ export class ChangeFileHandler {
   }
 
   async changeExt(
-    cb?: (fromUrl: string) => Promise<{ content: string; ext: string }>,
+    cb?: (
+      fromUrl: string,
+    ) => Promise<{ content: string | undefined; ext: string }>,
   ) {
     for (const fromUrl of this.fileTree) {
       const regex = new RegExp(`\.${this.options.from}$`, 'gi');
@@ -84,7 +86,9 @@ export class ChangeFileHandler {
     this.options.from = '\\.jsx|\\.js';
 
     return await this.changeExt(async (fromUrl) => {
-      let content = replaceRequireToImport(fs.readFileSync(fromUrl).toString());
+      let content: string | undefined = replaceRequireToImport(
+        fs.readFileSync(fromUrl).toString(),
+      );
       let ext = 'ts';
 
       if (content.includes('React')) {

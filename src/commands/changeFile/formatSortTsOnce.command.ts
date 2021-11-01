@@ -8,7 +8,7 @@ export const formatSortTsOnceCommand = vscode.commands.registerCommand(
   async () => {
     try {
       await new FixFileOnceHandler().formatAndSort();
-    } catch (error) {
+    } catch (error: any) {
       vscode.window.showErrorMessage(error);
     }
   },

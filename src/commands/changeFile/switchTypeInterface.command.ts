@@ -17,10 +17,10 @@ export const switchTypeInterfaceCommand = vscode.commands.registerCommand(
 
       editor.edit((editBuilder) => {
         try {
-          word = new SwitchHandler(word).switchTypeInterface();
+          word = new SwitchHandler(word).switchTypeInterface()!;
 
           editBuilder.replace(selection, word);
-        } catch (error) {
+        } catch (error: any) {
           vscode.window.showErrorMessage(error);
         }
       });

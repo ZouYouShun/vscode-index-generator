@@ -2,18 +2,18 @@ import * as vscode from 'vscode';
 
 export function checkExtensionLoaded(extensionName: string) {
   return new Promise((resolve, reject) => {
-    var extension = vscode.extensions.getExtension(extensionName);
+    const extension = vscode.extensions.getExtension(extensionName);
 
-    if (extension.isActive === false) {
+    if (extension && extension.isActive === false) {
       extension.activate().then(
         () => {
-          resolve();
+          resolve(undefined);
         },
         () => {
           reject(`Extension ${extensionName} activation failed`);
         },
       );
     }
-    resolve();
+    resolve(undefined);
   });
 }

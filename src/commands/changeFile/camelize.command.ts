@@ -41,7 +41,7 @@ export const camelizeCommand = vscode.commands.registerCommand(
             }
 
             editBuilder.replace(selection, word);
-          } catch (error) {
+          } catch (error: any) {
             vscode.window.showErrorMessage(error);
           }
         });

@@ -21,14 +21,14 @@ export namespace Lib {
         mkdirFull(url);
       }
     } catch (error) {
-      OutputChannel.appendLine(error);
+      OutputChannel.appendLine(error as string);
       return false;
     }
     return true;
   };
 
   export const writeFile = (url: string, value: string) => {
-    return new Promise<string>((resolve, reject) => {
+    return new Promise<string | undefined>((resolve, reject) => {
       try {
         const file = fs.createWriteStream(url);
         file.write(value);
@@ -49,7 +49,7 @@ export namespace Lib {
         fs.unlinkSync(url);
       }
     } catch (error) {
-      OutputChannel.appendLine(error);
+      OutputChannel.appendLine(error as string);
       return false;
     }
     return true;

@@ -10,7 +10,7 @@ export async function createIndex(
   additionProps: IndexGeneratorOptions = {},
 ) {
   const { rootPath } = vscode.workspace;
-  const { prettierConfig, ignore } = getConfigs(rootPath);
+  const { prettierConfig, ignore } = getConfigs(rootPath!);
 
   const dirPath = await askTargetFolder();
 

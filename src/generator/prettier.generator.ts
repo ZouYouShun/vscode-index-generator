@@ -9,23 +9,23 @@ import { OutputChannel } from '../utils';
 
 export class PrettierGenerator {
   url: string;
-  ignore: IndexIgnoreOptions;
+  ignore?: IndexIgnoreOptions;
   perttierConfig: any;
-  error = [];
+  error: string[] = [];
 
   ig = ignore();
 
   constructor(target: string, options: IndexGeneratorOptions) {
     this.url = target;
 
-    if (fs.existsSync(options.prettierConfig)) {
+    if (options.prettierConfig && fs.existsSync(options.prettierConfig)) {
       this.perttierConfig = require(options.prettierConfig);
     }
 
-    if (fs.existsSync(options.ignore)) {
+    if (options.ignore && fs.existsSync(options.ignore)) {
       this.ignore = require(options.ignore);
 
-      this.ig.add(this.ignore.exclude);
+      this.ig.add(this.ignore!.exclude);
     }
   }
 
@@ -36,7 +36,7 @@ export class PrettierGenerator {
     const filePaths = fs.readdirSync(dirUrl);
 
     filePaths.forEach((filePath) => {
-      const absoluteFilePath = path.join(dirUrl, filePath);
+      const absoluteFilePath = path.join(dirUrl!, filePath);
       try {
         const status = fs.statSync(absoluteFilePath);
 
