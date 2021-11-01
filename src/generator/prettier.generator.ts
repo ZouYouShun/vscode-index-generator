@@ -25,7 +25,9 @@ export class PrettierGenerator {
     if (options.ignore && fs.existsSync(options.ignore)) {
       this.ignore = require(options.ignore);
 
-      this.ig.add(this.ignore!.exclude);
+      if (this.ignore?.exclude) {
+        this.ig.add(this.ignore.exclude);
+      }
     }
   }
 

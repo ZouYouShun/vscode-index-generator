@@ -1,6 +1,8 @@
 import chalk from 'chalk';
 import * as fs from 'fs-extra';
+import ignore from 'ignore';
 import * as path from 'path';
+import { IndexIgnoreOptions } from '../generator/index.generator';
 
 import { OutputChannel } from '../utils';
 import { Lib } from '../utils/lib';
@@ -14,6 +16,11 @@ export interface ChangeFileHandlerOptions {
 
 export class ChangeFileHandler {
   fileTree = Lib.getFileTree(this.target, this.isDir);
+
+  noInclude = true;
+
+  ig = ignore();
+  gitIg = ignore();
 
   constructor(
     private target: string,
@@ -43,18 +50,30 @@ export class ChangeFileHandler {
     for (const fromUrl of this.fileTree) {
       const regex = new RegExp(`\.${this.options.from}$`, 'gi');
 
-      if (regex.test(fromUrl)) {
+      let checkUrl = fromUrl;
+      if (checkUrl[0] === '/') {
+        checkUrl = checkUrl.substring(1);
+      }
+
+      const isInclude = this.noInclude || this.ig.ignores(checkUrl);
+      const isExclude = this.gitIg.ignores(checkUrl);
+
+      if (regex.test(fromUrl) && isInclude && !isExclude) {
         let toUrl = fromUrl.replace(regex, `.${this.options.to}`);
 
         if (cb) {
           const result = await cb(fromUrl);
           toUrl = fromUrl.replace(regex, `.${result.ext}`);
 
+          // when have content mean that change from own script, others call from toTs extension, so do nothing
           if (result.content) {
-            fs.writeFileSync(toUrl, result.content);
-
             if (fs.existsSync(fromUrl)) {
-              fs.unlinkSync(fromUrl);
+              fs.moveSync(fromUrl, toUrl);
+              fs.writeFileSync(toUrl, result.content);
+              //
+              await new FixFileOnceHandler(toUrl).openFileAndFormat({
+                // sort: false,
+              });
             }
           }
         } else {
@@ -82,8 +101,19 @@ export class ChangeFileHandler {
     }
   }
 
-  async toTs() {
+  async toTs(config?: IndexIgnoreOptions) {
     this.options.from = '\\.jsx|\\.js';
+
+    if (config?.toTs?.include && config.toTs.include.length > 0) {
+      this.ig.add(config.toTs.include);
+      this.noInclude = false;
+    }
+
+    if (config?.toTs?.exclude) {
+      for (const iterator of config.toTs.exclude) {
+        this.gitIg.add(iterator);
+      }
+    }
 
     return await this.changeExt(async (fromUrl) => {
       let content: string | undefined = replaceRequireToImport(

@@ -85,30 +85,34 @@ export namespace Lib {
     }
   };
 
-  export const getFileTree = (sourceUrl: string, onlyDir = false): string[] => {
+  export function getFileTree(
+    sourceUrl: string,
+    acceptFolder?: boolean,
+    filterFn?: (filePath: string) => boolean,
+  ) {
     const returnObj: string[] = [];
     const files = fs.readdirSync(sourceUrl);
 
     files.forEach((file) => {
       const url = path.join(sourceUrl, file);
 
-      const isDir = fs.lstatSync(url).isDirectory();
+      if (url.match(/node_modules|\.git$|\.gitconfig/gm)) {
+        return;
+      }
 
-      if (onlyDir) {
-        if (isDir) {
-          return returnObj.push(url);
-        }
-      } else {
-        if (isDir) {
-          returnObj.push(...getFileTree(url));
-        } else {
+      if (fs.lstatSync(url).isDirectory()) {
+        if (acceptFolder) {
           returnObj.push(url);
+        } else {
+          returnObj.push(...getFileTree(url, acceptFolder, filterFn));
         }
+      } else if (!filterFn || filterFn?.(url)) {
+        returnObj.push(url);
       }
     });
 
     return returnObj;
-  };
+  }
 
   export const extname = (filePath: string) => {
     return path.extname(filePath).replace('.', '');

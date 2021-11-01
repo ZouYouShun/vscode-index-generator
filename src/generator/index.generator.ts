@@ -11,7 +11,8 @@ import { Lib } from '../utils/lib';
 import { IndexGeneratorOptions } from './IndexGeneratorOptions';
 
 export interface IndexIgnoreOptions {
-  exclude: string[];
+  exclude?: string[];
+  toTs?: { include?: string[]; exclude?: string[]; excludeFile?: string[] };
 }
 
 type ConvertOptions = {
@@ -28,9 +29,11 @@ export class IndexGenerator {
 
   constructor(private target: string, private options: IndexGeneratorOptions) {
     if (options.ignore && fs.existsSync(options.ignore)) {
-      this.ignore = require(options.ignore);
+      this.ignore = fs.readJSONSync(options.ignore);
 
-      this.ig.add(this.ignore!.exclude);
+      if (this.ignore?.exclude) {
+        this.ig.add(this.ignore.exclude);
+      }
     }
   }
 

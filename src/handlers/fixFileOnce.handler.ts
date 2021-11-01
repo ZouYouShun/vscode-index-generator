@@ -23,17 +23,16 @@ export class FixFileOnceHandler {
     }
     await openDocument(this.target);
 
-    await checkExtensionLoaded(
-      'mohsen1.react-javascript-to-typescript-transform-vscode',
-    );
-
     try {
+      await checkExtensionLoaded(
+        'mohsen1.react-javascript-to-typescript-transform-vscode',
+      );
       await executeCommand('extension.convertReactToTypeScript');
     } catch (error) {
       console.log(`convert to ts has problem but convert success.`);
     }
 
-    await this.openFileAndFormat(this.tsxFileName);
+    await this.openFileAndFormat({ target: this.tsxFileName });
   }
 
   async openAndRun(commands: string[]) {
@@ -47,9 +46,25 @@ export class FixFileOnceHandler {
     }
   }
 
-  async openFileAndFormat(target?: string) {
+  async openFileAndFormat({
+    target,
+    sort = true,
+  }: { target?: string; sort?: boolean } = {}) {
     await openDocument(target || this.target!);
-    await this.formatAndSort();
+    try {
+      if (sort) {
+        await this.formatAndSort();
+      } else {
+        await this.format();
+      }
+    } catch (error) {
+      console.log(`format and sort file error: ${target || this.target!}`);
+    }
+  }
+
+  async format() {
+    await checkExtensionLoaded('esbenp.prettier-vscode');
+    await executeCommand('editor.action.formatDocument');
   }
 
   async formatAndSort() {
@@ -57,7 +72,6 @@ export class FixFileOnceHandler {
     await executeCommand('typescriptHero.imports.organize');
     await sleep(300);
 
-    await checkExtensionLoaded('esbenp.prettier-vscode');
-    await executeCommand('editor.action.formatDocument');
+    await this.format();
   }
 }
