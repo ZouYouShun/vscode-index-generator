@@ -1,5 +1,21 @@
 # Change Log
 
+## 1.1.0
+
+### Feature
+
+- Support to ts config setting with include and exclude, excludeFiles
+
+```json
+{
+  "toTs": {
+    "include": ["**/src/*"],
+    "exclude": ["**/build/*"],
+    "excludeFiles": [".gitignore"] // ignore files that you want to ignore, same as git ignore format
+  }
+}
+```
+
 ## 1.0.0
 
 ### Feature
