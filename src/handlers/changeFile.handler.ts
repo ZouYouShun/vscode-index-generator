@@ -121,7 +121,7 @@ export class ChangeFileHandler {
       );
       let ext = 'ts';
 
-      if (content.includes('React')) {
+      if (content.includes(' React ') || content.includes(' React,')) {
         ext = 'tsx';
 
         await new FixFileOnceHandler(fromUrl, this.options.from).toTs();

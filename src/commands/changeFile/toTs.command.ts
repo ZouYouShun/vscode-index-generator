@@ -13,7 +13,7 @@ export const toTsCommand = vscode.commands.registerCommand(
   async () => {
     try {
       const { rootPath } = vscode.workspace;
-      const { ignore, gitignore } = getConfigs(rootPath!);
+      const { ignore } = getConfigs(rootPath!);
 
       let indexConfig: IndexIgnoreOptions | undefined = undefined;
 
