@@ -18,7 +18,7 @@
   "main": "./out/extension.js",
   "extensionPack": [
     "mohsen1.react-javascript-to-typescript-transform-vscode",
-    "rbbit.typescript-hero",
+    "dozerg.tsimportsorter",
     "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint"
   ],

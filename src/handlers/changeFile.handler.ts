@@ -71,9 +71,9 @@ export class ChangeFileHandler {
               fs.moveSync(fromUrl, toUrl);
               fs.writeFileSync(toUrl, result.content);
               //
-              await new FixFileOnceHandler(toUrl).openFileAndFormat({
-                // sort: false,
-              });
+              // await new FixFileOnceHandler(toUrl).openFileAndFormat({
+              //   // sort: false,
+              // });
             }
           }
         } else {

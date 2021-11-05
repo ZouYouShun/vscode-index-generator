@@ -32,7 +32,7 @@ export class FixFileOnceHandler {
       console.log(`convert to ts has problem but convert success.`);
     }
 
-    await this.openFileAndFormat({ target: this.tsxFileName });
+    // await this.openFileAndFormat({ target: this.tsxFileName });
   }
 
   async openAndRun(commands: string[]) {
@@ -68,9 +68,9 @@ export class FixFileOnceHandler {
   }
 
   async formatAndSort() {
-    await checkExtensionLoaded('rbbit.typescript-hero');
-    await executeCommand('typescriptHero.imports.organize');
-    await sleep(300);
+    await checkExtensionLoaded('dozerg.tsimportsorter');
+    await executeCommand('tsImportSorter.command.sortImports');
+    // await sleep(300);
 
     await this.format();
   }
