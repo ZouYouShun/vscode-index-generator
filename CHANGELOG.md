@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.2
+
+### Feature
+
+change ts formatter to [`dozerg.tsimportsorter`](https://marketplace.visualstudio.com/items?itemName=dozerg.tsimportsorter)
+
 ## 1.1.0
 
 ### Feature
