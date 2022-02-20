@@ -9,12 +9,21 @@ export const clearEmptyFolderCommand = vscode.commands.registerCommand(
   async () => {
     try {
       const dirPath = await askTargetFolder();
+      if (!dirPath) return;
 
-      await new ChangeFileHandler(dirPath, undefined, true).clearEmptyFolder();
+      await vscode.window.withProgress(
+        {
+          cancellable: false,
+          location: vscode.ProgressLocation.Notification,
+          title: `clear empty folder ${dirPath} ......`,
+        },
+        async (process, token) => {
+          token.onCancellationRequested(() => {
+            return;
+          });
 
-      vscode.window.showInformationMessage(
-        'clear empty folder complete!',
-        'OK',
+          return new ChangeFileHandler(dirPath, true).clearEmptyFolder();
+        },
       );
     } catch (error: any) {
       vscode.window.showErrorMessage(error);

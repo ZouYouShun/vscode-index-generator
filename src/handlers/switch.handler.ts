@@ -12,8 +12,10 @@ export class SwitchHandler {
 
       return this.template;
     }
+
+    return null;
   }
-  
+
   // (type .*)|(};)
   private switchDo(fromType: boolean) {
     const t1 = ['type ', 'interface '];

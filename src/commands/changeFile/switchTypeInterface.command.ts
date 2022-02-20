@@ -1,29 +1,29 @@
-import * as path from 'path';
 import * as vscode from 'vscode';
 
-import { ChangeFileHandler } from '../../handlers/changeFile.handler';
-import { extensionNamespace } from '../../utils/extensionNamespace';
 import { SwitchHandler } from '../../handlers';
+import { extensionNamespace } from '../../utils/extensionNamespace';
 
 export const switchTypeInterfaceCommand = vscode.commands.registerCommand(
   `${extensionNamespace}.switchTypeInterface`,
   async () => {
     let editor = vscode.window.activeTextEditor;
 
-    if (editor) {
-      const { document, selection } = editor;
+    if (!editor) return;
 
-      let word = document.getText(selection);
+    const { document, selection } = editor;
 
-      editor.edit((editBuilder) => {
-        try {
-          word = new SwitchHandler(word).switchTypeInterface()!;
+    editor.edit((editBuilder) => {
+      try {
+        const selectionText = document.getText(selection);
 
-          editBuilder.replace(selection, word);
-        } catch (error: any) {
-          vscode.window.showErrorMessage(error);
-        }
-      });
-    }
+        const text = new SwitchHandler(selectionText).switchTypeInterface();
+
+        if (!text) return;
+
+        editBuilder.replace(selection, text);
+      } catch (error: any) {
+        vscode.window.showErrorMessage(error);
+      }
+    });
   },
 );

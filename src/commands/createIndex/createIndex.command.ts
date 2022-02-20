@@ -12,7 +12,6 @@ export const createIndexCommand = (
     async () => {
       try {
         await createIndex(type);
-        vscode.window.showInformationMessage('Create index successful!', 'OK');
       } catch (error: any) {
         vscode.window.showErrorMessage(error);
       }

@@ -2,13 +2,13 @@ import * as vscode from 'vscode';
 
 import {
   camelizeCommand,
+  changeExtCommand,
   clearEmptyFolderCommand,
   createIndexCommand,
   createIndexOnlyTargetCommand,
-  formatSortTsCommand,
+  formatCommand,
   formatSortTsOnceCommand,
   openAndRunCommand,
-  prettierFormatCommand,
   switchTypeInterfaceCommand,
   toTsCommand,
 } from './commands';
@@ -16,14 +16,14 @@ import { OutputChannel } from './utils';
 import { extensionNamespace } from './utils/extensionNamespace';
 
 export function activate(context: vscode.ExtensionContext) {
-  OutputChannel.appendLine(`"${extensionNamespace}" is now active!`, false);
+  OutputChannel.appendLine(`"${extensionNamespace}" is now active!`);
 
   context.subscriptions.push(
     openAndRunCommand,
+    changeExtCommand,
     clearEmptyFolderCommand,
-    formatSortTsCommand,
     formatSortTsOnceCommand,
-    prettierFormatCommand,
+    formatCommand,
     toTsCommand,
     camelizeCommand,
     switchTypeInterfaceCommand,

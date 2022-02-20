@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 
+import { IndexGeneratorOptions } from '../../generator/IndexGeneratorOptions';
 import { extensionNamespace } from '../../utils/extensionNamespace';
 import { createIndex } from './utils';
-import { IndexGeneratorOptions } from '../../generator/IndexGeneratorOptions';
 
 export const createIndexOnlyTargetCommand = (
   type: IndexGeneratorOptions['type'] = 'both',
@@ -12,7 +12,6 @@ export const createIndexOnlyTargetCommand = (
     async () => {
       try {
         await createIndex(type, { onlyTarget: true });
-        vscode.window.showInformationMessage('Create index successful!', 'OK');
       } catch (error) {
         vscode.window.showErrorMessage(error as string);
       }

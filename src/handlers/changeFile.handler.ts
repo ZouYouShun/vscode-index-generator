@@ -1,112 +1,77 @@
-import chalk from 'chalk';
 import * as fs from 'fs-extra';
 import ignore from 'ignore';
 import * as path from 'path';
+
 import { IndexIgnoreOptions } from '../generator/index.generator';
-
-import { OutputChannel } from '../utils';
-import { Lib } from '../utils/lib';
-import { FixFileOnceHandler } from './fixFileOnce.handler';
-import { replaceRequireToImport } from './utils';
-
-export interface ChangeFileHandlerOptions {
-  from: string;
-  to: string;
-}
+import { FileContentProcessor, getFileTreeSync, OutputChannel } from '../utils';
+import { validateExtPath } from '../utils';
+import { RunCommandHandler } from './run-command.handler';
+import {
+  putComponentExportDefaultAtEnd,
+  replaceRequireToImport,
+} from './utils';
 
 export class ChangeFileHandler {
-  fileTree = Lib.getFileTree(this.target, this.isDir);
-
-  noInclude = true;
+  fileTree = getFileTreeSync(this.target, { onlyFolder: this.onlyFolder });
 
   ig = ignore();
   gitIg = ignore();
 
-  constructor(
-    private target: string,
-    private options: ChangeFileHandlerOptions = {} as any,
-    private isDir: boolean = false,
-  ) {}
+  constructor(private target: string, private onlyFolder = false) {}
 
   async clearEmptyFolder() {
+    // that fileTree will start from deep folder, so delete directly is ok
     this.fileTree.forEach((url) => {
-      const stats = fs.statSync(url);
-      const file = path.parse(url);
-      if (stats.isDirectory() && !file.ext) {
-        const child = Lib.getFileTree(url);
-        if (child.length === 0) {
-          Lib.deleteDir(url);
-          OutputChannel.appendLine(`${chalk.green('delete dir ')} ${url}`);
-        }
-      }
+      const child = getFileTreeSync(url);
+
+      if (child.length > 0) return;
+
+      fs.removeSync(url);
+      OutputChannel.appendLine(`delete dir ${url}`);
     });
   }
 
-  async changeExt(
-    cb?: (
-      fromUrl: string,
-    ) => Promise<{ content: string | undefined; ext: string }>,
-  ) {
-    for (const fromUrl of this.fileTree) {
-      const regex = new RegExp(`\.${this.options.from}$`, 'gi');
-
-      let checkUrl = fromUrl;
-      if (checkUrl[0] === '/') {
-        checkUrl = checkUrl.substring(1);
-      }
-
-      const isInclude = this.noInclude || this.ig.ignores(checkUrl);
-      const isExclude = this.gitIg.ignores(checkUrl);
-
-      if (regex.test(fromUrl) && isInclude && !isExclude) {
-        let toUrl = fromUrl.replace(regex, `.${this.options.to}`);
-
-        if (cb) {
-          const result = await cb(fromUrl);
-          toUrl = fromUrl.replace(regex, `.${result.ext}`);
-
-          // when have content mean that change from own script, others call from toTs extension, so do nothing
-          if (result.content) {
-            if (fs.existsSync(fromUrl)) {
-              fs.moveSync(fromUrl, toUrl);
-              fs.writeFileSync(toUrl, result.content);
-              //
-              // await new FixFileOnceHandler(toUrl).openFileAndFormat({
-              //   // sort: false,
-              // });
-            }
-          }
-        } else {
-          fs.moveSync(fromUrl, toUrl, { overwrite: true });
-        }
-
-        OutputChannel.appendLine(
-          `${chalk.green(`To ${path.extname(toUrl)}: `)} ${toUrl}`,
-        );
-      }
-    }
-  }
-
+  /**
+   * open that file and run each commands one by one
+   */
   async openAndRun(commands: string[]) {
     for (const fromUrl of this.fileTree) {
-      await new FixFileOnceHandler(fromUrl).openAndRun(commands);
+      await new RunCommandHandler(fromUrl).openAndRun(commands);
     }
   }
 
-  async formatTsCode() {
-    for (const fromUrl of this.fileTree) {
-      if (new RegExp(`\.ts$|\.tsx$`, 'gi').test(fromUrl)) {
-        await new FixFileOnceHandler(fromUrl).openFileAndFormat();
-      }
-    }
+  /**
+   * open that file and run each commands one by one
+   */
+  async changeExt({ from: fromExt, to: toExt }: { from: string; to: string }) {
+    const processor = new FileContentProcessor({
+      acceptContentNotChanged: true,
+      getDestination: (filepath) => {
+        const ext = path.extname(filepath);
+
+        return filepath.replace(ext, `.${toExt}`);
+      },
+      filter: (filePath) => {
+        return validateExtPath(filePath, { includeExts: [fromExt] });
+      },
+      onSuccess: async (filePath) => {
+        await fs.remove(filePath);
+
+        OutputChannel.appendLine(`to ${toExt} success: ${filePath}`);
+      },
+      onError: (filePath) => {
+        OutputChannel.appendLine(`error with ${filePath}`, { error: filePath });
+      },
+    });
+
+    await processor.processFolder(this.target);
   }
 
   async toTs(config?: IndexIgnoreOptions) {
-    this.options.from = '\\.jsx|\\.js';
+    const hasInclude = config?.toTs?.include && config.toTs.include.length > 0;
 
-    if (config?.toTs?.include && config.toTs.include.length > 0) {
-      this.ig.add(config.toTs.include);
-      this.noInclude = false;
+    if (hasInclude) {
+      this.ig.add(config!.toTs!.include!);
     }
 
     if (config?.toTs?.exclude) {
@@ -115,24 +80,44 @@ export class ChangeFileHandler {
       }
     }
 
-    return await this.changeExt(async (fromUrl) => {
-      let content: string | undefined = replaceRequireToImport(
-        fs.readFileSync(fromUrl).toString(),
-      );
-      let ext = 'ts';
+    const processor = new FileContentProcessor({
+      acceptContentNotChanged: true,
+      processor: (filepath, content) => {
+        content = replaceRequireToImport(content);
+        content = putComponentExportDefaultAtEnd(content);
 
-      if (content.includes(' React ') || content.includes(' React,')) {
-        ext = 'tsx';
+        return content;
+      },
+      getDestination: (filepath, content) => {
+        const ext = path.extname(filepath);
 
-        await new FixFileOnceHandler(fromUrl, this.options.from).toTs();
+        const toExt = / React,| React |'react'/.test(content) ? '.tsx' : '.ts';
 
-        content = undefined;
-      }
+        return filepath.replace(ext, toExt);
+      },
+      filter: (filePath) => {
+        let checkUrl = filePath;
 
-      return {
-        content,
-        ext,
-      };
+        // ignore first / to make ignore work correct
+        if (checkUrl[0] === '/') {
+          checkUrl = checkUrl.substring(1);
+        }
+
+        const isInclude = hasInclude ? this.ig.ignores(checkUrl) : true;
+        const isExclude = this.gitIg.ignores(checkUrl);
+
+        return isInclude && !isExclude && /\.jsx|\.js/.test(filePath);
+      },
+      onSuccess: async (filePath) => {
+        await fs.remove(filePath);
+
+        OutputChannel.appendLine(`to ts success: ${filePath}`);
+      },
+      onError: (filePath) => {
+        OutputChannel.appendLine(`error with ${filePath}`, { error: filePath });
+      },
     });
+
+    await processor.processFolder(this.target);
   }
 }

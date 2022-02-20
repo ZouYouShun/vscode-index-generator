@@ -2,6 +2,11 @@ import * as vscode from 'vscode';
 
 import { extensionNamespace } from './extensionNamespace';
 
+type AppendLineOptions = {
+  show?: boolean;
+  error?: any;
+};
+
 export class OutputChannel {
   private static instance: OutputChannel;
 
@@ -14,18 +19,24 @@ export class OutputChannel {
     return OutputChannel.instance;
   }
 
-  static appendLine(message: string | string[], show = true) {
+  static appendLine(
+    message: string,
+    { error, show = error }: AppendLineOptions = {},
+  ) {
     const { channel } = OutputChannel.getInstance();
 
-    if (message instanceof Array) {
-      message.forEach((m) => channel.appendLine(m));
-    } else {
-      channel.appendLine(message);
+    channel.appendLine(message);
+
+    if (show) channel.show(show);
+
+    if (error) {
+      vscode.window.showErrorMessage(message[0]);
+
+      if (error?.message) {
+        channel.appendLine(error.message);
+      }
     }
 
-    if (show) {
-      channel.show(show);
-    }
     console.log(message);
   }
 }

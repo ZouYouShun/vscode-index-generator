@@ -1,17 +1,24 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
+
 import { showInputBox } from './showInputBox';
 
-export function askTargetFolder(message: string = 'target folder:') {
-  const { rootPath } = vscode.workspace;
-  const dirPath = vscode.window.activeTextEditor
-    ? path.dirname(vscode.window.activeTextEditor.document.fileName)
-    : rootPath;
+type AskTargetFolderParams = {
+  message?: string;
+  rootPath: string;
+};
 
-  return showInputBox({
+export function askTargetFolder(
+  {
+    message = 'target folder:',
+    rootPath = vscode.window.activeTextEditor
+      ? path.dirname(vscode.window.activeTextEditor.document.fileName)
+      : '',
+  }: AskTargetFolderParams = {} as any,
+) {
+  return vscode.window.showInputBox({
+    title: message,
     placeHolder: message,
-    value: dirPath,
+    value: rootPath,
   });
 }
-
-
