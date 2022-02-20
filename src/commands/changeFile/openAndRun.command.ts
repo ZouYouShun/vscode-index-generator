@@ -35,6 +35,17 @@ export const openAndRunCommand = vscode.commands.registerCommand(
 
       if (commands.length === 0) return;
 
+      const betweenMessage =
+        'Please enter timer (ms) for delay between each command';
+
+      const timer = await vscode.window.showInputBox({
+        title: betweenMessage,
+        placeHolder: betweenMessage,
+        value: '0',
+      });
+
+      if (Number.isNaN(+timer!) || timer === null) return;
+
       await vscode.window.withProgress(
         {
           cancellable: false,
@@ -46,7 +57,7 @@ export const openAndRunCommand = vscode.commands.registerCommand(
             return;
           });
 
-          await new ChangeFileHandler(dirPath).openAndRun(commands);
+          await new ChangeFileHandler(dirPath).openAndRun(commands, +timer!);
         },
       );
     } catch (error: any) {

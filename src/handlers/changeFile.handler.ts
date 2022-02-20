@@ -34,9 +34,9 @@ export class ChangeFileHandler {
   /**
    * open that file and run each commands one by one
    */
-  async openAndRun(commands: string[]) {
+  async openAndRun(commands: string[], timer = 300) {
     for (const fromUrl of this.fileTree) {
-      await new RunCommandHandler(fromUrl).openAndRun(commands);
+      await new RunCommandHandler(fromUrl).openAndRun(commands, timer);
     }
   }
 
