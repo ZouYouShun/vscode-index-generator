@@ -1,4 +1,18 @@
-# Change Log
+# Changelog
+
+## 2.0.0 (2022-02-20)
+
+✨ Release with standard-version
+✨ Index generator refactor for better re-export format
+✨ support change any extension of files. like `.md` to `.mdx`
+✨ Prettier format can also format sort at same time(optional).
+✨ Whole project code cleanup
+
+### Features
+
+- **Camelize:** cleanup camelize with vscode question ([86adfb3](https://github.com/ZouYouShun/vscode-index-generator/commit/86adfb38230c538cfcff6b1ab06fafbd188a6740))
+- **Command:** [OpenAndRun] support custom delay time ([2d561d1](https://github.com/ZouYouShun/vscode-index-generator/commit/2d561d1da121e2e6313cdb1c9aaf22bc5db22d6f))
+- **Project:** cleanup whole project ([4c6ce02](https://github.com/ZouYouShun/vscode-index-generator/commit/4c6ce02cacd9a2c084fc41da729d36805b648e9d))
 
 ## 1.1.2
 
