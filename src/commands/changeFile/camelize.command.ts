@@ -2,9 +2,9 @@ import * as vscode from 'vscode';
 
 import {
   camelize,
+  escapeRegExp,
+  transformFirstCharacter,
   uncamelize,
-  firstLowerCase,
-  showInputBox,
 } from '../../utils';
 import { extensionNamespace } from '../../utils/extensionNamespace';
 
@@ -13,42 +13,82 @@ export const camelizeCommand = vscode.commands.registerCommand(
   async () => {
     let editor = vscode.window.activeTextEditor;
 
-    if (editor) {
-      const { document, selections } = editor;
+    if (!editor) return;
 
-      const isFirstLowerCase = vscode.workspace
+    const { document, selections } = editor;
+
+    const defaultCamelizeSeparator = vscode.workspace
+      .getConfiguration(extensionNamespace)
+      .get<string>('camelizeSeparator');
+
+    const message = 'Please enter char of camelize separator';
+
+    const pickList = ['-', '_'].map((label) => ({
+      label,
+      picked: label === defaultCamelizeSeparator,
+    }));
+
+    const camelizeSeparator = await vscode.window.showQuickPick(pickList, {
+      title: message,
+      placeHolder: message,
+    });
+
+    if (!camelizeSeparator) return;
+
+    const regExp = new RegExp(escapeRegExp(camelizeSeparator.label));
+
+    const doCamelize = selections.some((x) => regExp.test(document.getText(x)));
+
+    let isFirstLowerCaseValue = false;
+
+    if (doCamelize) {
+      const defaultFirstLowerCase = vscode.workspace
         .getConfiguration(extensionNamespace)
         .get<boolean>('firstLowerCase');
 
-      const camelizeSeparator = await showInputBox({
-        placeHolder: 'Please enter char of camelize separator',
-        value: vscode.workspace
-          .getConfiguration(extensionNamespace)
-          .get<string>('camelizeSeparator'),
-      });
+      const isFirstLowerCase = await vscode.window.showQuickPick(
+        [
+          {
+            label: 'uppercase',
+            value: false,
+            picked: !defaultFirstLowerCase,
+          },
+          {
+            label: 'lowercase',
+            value: true,
+            picked: defaultFirstLowerCase,
+          },
+        ],
+        {
+          title: 'First character format',
+        },
+      );
 
-      editor.edit((editBuilder) => {
-        selections.forEach(async (selection) => {
-          let word = document.getText(selection);
-          try {
-            if (word.includes('_') || word.includes('-')) {
-              word = camelize(word);
-              if (isFirstLowerCase) {
-                word = firstLowerCase(word);
-              }
-            } else {
-              word = uncamelize(word, camelizeSeparator);
-            }
+      if (!isFirstLowerCase) return;
 
-            editBuilder.replace(selection, word);
-          } catch (error: any) {
-            vscode.window.showErrorMessage(error);
-          }
-        });
-      });
+      isFirstLowerCaseValue = isFirstLowerCase.value;
     }
+
+    editor.edit((editBuilder) => {
+      for (const selection of selections) {
+        let word = document.getText(selection);
+
+        try {
+          if (doCamelize) {
+            word = camelize(word);
+
+            word = transformFirstCharacter(word, (s: string): string =>
+              isFirstLowerCaseValue ? s.toLocaleLowerCase() : s.toUpperCase(),
+            );
+          } else {
+            word = uncamelize(word, camelizeSeparator.label);
+          }
+
+          editBuilder.replace(selection, word);
+        } catch (error: any) {
+          vscode.window.showErrorMessage(error);
+        }
+      }
+    });
   },
 );
-// vscode.workspace
-//       .openTextDocument({ language: 'typescript', content: 'eewq' })
-//       .then((doc) => vscode.window.showTextDocument(doc));
