@@ -1,9 +1,14 @@
-import { OutputChannel } from './../../../utils/outputCannel';
 import * as vscode from 'vscode';
+
 import { IndexGenerator } from '../../../generator';
 import { IndexGeneratorOptions } from '../../../generator/IndexGeneratorOptions';
-import { askTargetFolder, getWorkspacePath } from '../../../utils';
+import {
+  askTargetFolder,
+  extensionNamespace,
+  getWorkspacePath,
+} from '../../../utils';
 import { getConfigs } from '../../../utils/extension/getConfigs';
+import { OutputChannel } from '../../../utils/outputCannel';
 
 export async function createIndex(
   type: IndexGeneratorOptions['type'] = 'both',
@@ -28,11 +33,18 @@ export async function createIndex(
         return;
       });
 
+      const reExportDefaultCase = vscode.workspace
+        .getConfiguration(extensionNamespace)
+        .get<IndexGeneratorOptions['reExportDefaultCase']>(
+          'reExportDefaultCase',
+        );
+
       const indexGenerator = new IndexGenerator(dirPath, {
         force: true,
         type,
         prettierConfig,
         ignore,
+        reExportDefaultCase,
         ...additionProps,
       });
 

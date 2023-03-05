@@ -5,4 +5,5 @@ export type IndexGeneratorOptions = {
   ignore?: string;
   onlyTarget?: boolean;
   prettierConfig?: string;
+  reExportDefaultCase?: 'lowerCamelCase' | 'camelCase' | 'followFileName';
 };

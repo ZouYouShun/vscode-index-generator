@@ -5,7 +5,12 @@ import * as os from 'os';
 import * as path from 'path';
 import * as prettier from 'prettier';
 
-import { camelize, OutputChannel, validateExtPath } from '../utils';
+import {
+  camelize,
+  lowercaseCameCase,
+  OutputChannel,
+  validateExtPath,
+} from '../utils';
 import { IndexGeneratorOptions } from './IndexGeneratorOptions';
 
 export interface IndexIgnoreOptions {
@@ -16,6 +21,10 @@ export interface IndexIgnoreOptions {
 export class IndexGenerator {
   ig = ignore();
   ignore?: IndexIgnoreOptions;
+
+  get reExportDefaultCase() {
+    return this.options.reExportDefaultCase;
+  }
 
   constructor(private target: string, private options: IndexGeneratorOptions) {
     if (options.ignore && fs.existsSync(options.ignore)) {
@@ -142,8 +151,27 @@ export class IndexGenerator {
           (x) => x !== dirName,
         );
 
+        const processor = (() => {
+          switch (this.reExportDefaultCase) {
+            case 'lowerCamelCase':
+              return lowercaseCameCase;
+            case 'followFileName':
+              return (fileName: string) => {
+                const firstChar = fileName[0];
+                const isLowercase = firstChar === firstChar.toLocaleLowerCase();
+
+                return isLowercase
+                  ? lowercaseCameCase(fileName)
+                  : camelize(fileName);
+              };
+            case 'camelCase':
+            default:
+              return camelize;
+          }
+        })();
+
         importDefaultThenExportContent = importPaths
-          .map((x) => `export { default as ${camelize(x)} } from './${x}';`)
+          .map((x) => `export { default as ${processor(x)} } from './${x}';`)
           .join(os.EOL);
       }
 
