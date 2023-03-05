@@ -95,13 +95,24 @@
         "index-generator.firstLowerCase": {
           "type": "boolean",
           "default": true,
-          "description": "is the first word to be lowercase",
+          "description": "is the first word to be lowercase, use in `index-generator.switchCamelize`",
           "scope": "window"
         },
         "index-generator.camelizeSeparator": {
           "type": "string",
           "default": "_",
-          "description": "camelize separator char",
+          "description": "camelize separator char, use in `index-generator.switchCamelize`",
+          "scope": "window"
+        },
+        "index-generator.reExportDefaultCase": {
+          "type": "string",
+          "default": "camelCase",
+          "description": "when generating file with `default` export use that format to re-export.",
+          "enum": [
+            "camelCase",
+            "lowerCamelCase",
+            "followFileName"
+          ],
           "scope": "window"
         }
       }

@@ -48,3 +48,9 @@ export function transformFirstCharacter(
 ): string {
   return processor(input[0]) + input.substring(1);
 }
+
+export const lowercaseCameCase = (fileName: string) => {
+  return transformFirstCharacter(camelize(fileName), (x) => {
+    return x.toLocaleLowerCase();
+  });
+};
