@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/ZouYouShun/vscode-index-generator/compare/v2.0.0...v2.1.0) (2023-03-05)
+
+
+### Features
+
+* **IndexGenerator:** support text format  when generate index file re-export content with configuration setting ([1ba4040](https://github.com/ZouYouShun/vscode-index-generator/commit/1ba40405824d597e9edc99a6de6bbb944b2f1327))
+
 ## 2.1.0 (2023-03-05)
 
 
